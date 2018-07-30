@@ -2,14 +2,15 @@ from flask import Flask
 from flask import jsonify
 import pandas as pd
 import random
-import json
 import numpy as np
 
 app = Flask(__name__)
 
 df = pd.read_csv('aifood_dfs_clean.csv')
 dfs = df.loc[:, 'Ingredients':].dropna()
-values = {x[0]: [x[1:], 0] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
+dfs_name = dfs.set_index("Ingredients", drop = False)
+values = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
+dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
 
 @app.route('/', methods = ['GET'])
 def api_root():
@@ -80,16 +81,15 @@ def api_fix(diff):
     
     for ing in values.keys():
 
-        effect = sum([abs(values[ing][0][i] + diff_to_fix[i]) for i in range(1, preferences)])
-        values[ing][1] = effect
+        effect = sum([abs(values[ing][i] + diff_to_fix[i]) for i in range(4)])
 
-        if values[ing][1] < net_effect:
+        if effect < net_effect:
 
-            net_effect = values[ing][1]
+            net_effect = effect
             ing_to_add = ing
             
-    ing_to_add = [ing_to_add, str(ing_to_add['serving_qty']) + ' ' + str(ing_to_add['serving_unit']),
-                  ing_to_dict(zip(dic.values(), values[ing_to_add][0]))]
+    ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
+                  dict(zip(dic.values(), values[ing_to_add]))]
     return jsonify({
                         'label': str(ing_to_add[0]),
                         'amount': str(ing_to_add[1]),
@@ -100,5 +100,14 @@ def api_fix(diff):
                   })
 
 
+@app.route('/cluster/<string>', methods = ['GET'])
+def api_cluster(string):
+
+    string_array = list(map(str, string.split(',')))
+    return jsonify(string_array)
+
+
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
+
+
