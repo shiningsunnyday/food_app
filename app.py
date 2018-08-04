@@ -1,8 +1,11 @@
 from flask import Flask
 from flask import jsonify
+from flask import request
 import pandas as pd
 import random
 import numpy as np
+import scipy.sparse.linalg as linalg
+from sklearn.cluster import KMeans
 
 app = Flask(__name__)
 
@@ -99,13 +102,72 @@ def api_fix(diff):
                         'carbs': ing_to_add[2]['carbs']
                   })
 
+def k_means(X, n_clusters):
+    
+    kmeans = KMeans(n_clusters=n_clusters, random_state=1231)
+    return kmeans.fit(X).labels_
 
-@app.route('/cluster/<string>', methods = ['GET'])
-def api_cluster(string):
+dic = dict(dfs.loc[:]['Ingredients'])
+dic = {dic[x]: x for x in dic}
+laplacian_matrix = pd.read_csv('laplacian_matrix.csv').iloc[:,1:]
 
-    string_array = list(map(str, string.split(',')))
-    return jsonify(string_array)
+def laplacian(array):
+    
+    arr = [dic[x] for x in array]
+    laplacian = laplacian_matrix.iloc[arr, arr].values
+    return laplacian
 
+def spectral_cluster(array, num_meals):
+    
+    X = laplacian(array)
+    eigen_vals, eigen_vects = linalg.eigs(X, num_meals)
+    X = eigen_vects.real
+    rows_norm = np.linalg.norm(X, axis=1, ord=2)
+    Y = (X.T / rows_norm).T
+    labels = k_means(Y, num_meals)
+    dic = dict(zip(array, labels))
+    unique, counts = np.unique(labels, return_counts=True)
+    return [[x for x in dic.keys() if dic[x] == j] for j in range(num_meals)]
+
+
+@app.route('/cluster/', methods = ['GET'])
+def api_cluster():
+    
+    string = str(request.args.get('ingredients'))
+    string = string.replace('_', ' ')
+    num_meals = int(request.args.get('num_meals'))
+
+    listToNames = string.split(',')
+    x = spectral_cluster(listToNames, num_meals)
+    ingredients = [[] for i in range(num_meals)]
+    requirements = [[0, 0, 0, 0] for i in range(num_meals)]
+    dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
+
+    for i in range(len(x)):
+        for j in x[i]:
+            ing_to_add = [j, str(dfs_name.loc[j]['serving_qty']) + ' ' + str(dfs_name.loc[j]['serving_unit']),
+                  dict(zip(dic.values(), values[j]))]
+            
+            ingredients[i].append({
+                        'label': str(ing_to_add[0]),
+                        'amount': str(ing_to_add[1]),
+                        'calories': ing_to_add[2]['calories'],
+                        'protein': ing_to_add[2]['protein'],
+                        'fat': ing_to_add[2]['fat'],
+                        'carbs': ing_to_add[2]['carbs']
+                      })
+            requirements[i][0] += ing_to_add[2]['calories']
+            requirements[i][1] += ing_to_add[2]['protein']
+            requirements[i][2] += ing_to_add[2]['fat']
+            requirements[i][3] += ing_to_add[2]['carbs']
+    
+    return jsonify({"listOfIngredientLists": [{
+
+        "listToDisplay": ingredients[i],
+        "requirements": [int(y) for y in requirements[i]]
+        
+        }
+                    for i in range(len(x))]})
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
