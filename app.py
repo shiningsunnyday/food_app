@@ -15,6 +15,45 @@ dfs_name = dfs.set_index("Ingredients", drop = False)
 values = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
 dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
 
+def iterate(ingredients, mcros, target_mcros, preferences = 4):
+
+    dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
+    minimal_error = sum([abs(mcros[i] - target_mcros[i]) for i in range(1, preferences)])
+    ing_to_add = ""
+    boo = True
+    
+    for ing in values.keys():
+
+        effect = sum([abs(values[ing][i] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
+
+        if effect < minimal_error:
+
+            minimal_error = effect
+            ing_to_add = ing
+
+    for ing in ingredients:
+
+        ing = ing[0]
+        subtract_effect = sum([abs(-values[ing][i] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
+
+        if subtract_effect < minimal_error:
+
+            minimal_error = subtract_effect
+            boo = False
+            ing_to_add = ing
+
+    ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']), dict(zip(dic.values(), values[ing_to_add]))]           
+            
+    if boo:
+        
+        ingredients.append(ing_to_add)
+    else:
+        
+        ingredients.remove(ing_to_add)
+        del values[ing_to_add[0]]
+    
+    return ingredients, [mcros[i] + ing_to_add[2][dic[i]] if boo else mcros[i] - ing_to_add[2][dic[i]] for i in range(len(dic))]
+
 @app.route('/', methods = ['GET'])
 def api_root():
     return jsonify(".")
@@ -31,19 +70,18 @@ def api_macros2():
 
 @app.route('/macros/<target_macros>', methods = ['GET'])
 def api_macros_(target_macros):
-    
+    dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     target_macros_processed = list(map(int, target_macros.split('_')))
-    dic = {0: 'calories', 1: 'protein', 2: 'fat', 3: 'carbs'}
 
     mcros = [0, 0, 0, 0]
     ingredients = []
     
     while True:
         
-        rand = random.randint(0, len(dfs))
-        ing = dfs.iloc[rand]
+        rand = random.randint(0, len(dfs_name))
+        ing = dfs_name.iloc[rand]
 
-        if mcros[0] + ing[dic[0]] > target_macros_processed[0] * 1.1:
+        if mcros[0] + ing['calories'] > target_macros_processed[0] * 1.1:
 
             pass
 
@@ -57,7 +95,12 @@ def api_macros_(target_macros):
             if target_macros_processed[0] * 0.9 <= mcros[0]:
 
                 break
-   
+
+    ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
+    ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
+    ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
+    ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
+    ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
     
     return jsonify({"requirements": [int(x) for x in mcros],
                     "listToDisplay": [
@@ -77,6 +120,7 @@ def api_macros_(target_macros):
 @app.route('/diff/<diff>', methods = ['GET'])
 def api_fix(diff):
 
+    dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     diff_to_fix = list(map(int, diff.split('_')))
     minimal_error = sum([abs(i) for i in diff_to_fix])
     net_effect = minimal_error
