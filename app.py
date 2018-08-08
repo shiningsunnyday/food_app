@@ -35,27 +35,29 @@ def generate(target_macros_processed):
     
     while True:
 
-        while True:
-            try:
-                rand = random.randint(0, len(dfs_name))
-                ing = dfs_name.iloc[rand]
-                break
-            except IndexError:
+        try:
+            rand = random.randint(0, len(dfs_name))
+            ing = dfs_name.iloc[rand]
+            
+        except IndexError:
 
-                pass
+            rand = random.randint(0, len(dfs_name))
+            ing = dfs_name.iloc[rand]
 
-        if mcros[0] + ing['calories'] > target_macros_processed[0] * 1.1 or ing['calories']/(mcros[0] + 1) < 0.1 :
+        if ing['calories']/(mcros[0] + 1) < 0.1 :
 
             pass
 
         else:
-            
-            ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
-                                {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
-                
-            mcros = [mcros[i] + ing[dic[i]] for i in range(len(mcros))]
 
-            if target_macros_processed[0] <= mcros[0]:
+            if mcros[0] + ing['calories'] < target_macros_processed[0] * 1.1:
+            
+                ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
+                                    {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
+                    
+                mcros = [mcros[i] + ing[dic[i]] for i in range(len(mcros))]
+
+            else
 
                 break
 
