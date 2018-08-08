@@ -228,7 +228,7 @@ def api_cluster():
     for i in range(len(x)):
         for j in x[i]:
             ing_to_add = [j, str(dfs_name.loc[j]['serving_qty']) + ' ' + str(dfs_name.loc[j]['serving_unit']),
-                  dict(zip(dic.values(), values_copy[j]))]
+                  dict(zip(dic.values(), values[j]))]
             
             ingredients[i].append({
                         'label': str(ing_to_add[0]),
