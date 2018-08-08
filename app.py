@@ -57,7 +57,7 @@ def generate(target_macros_processed):
                     
                 mcros = [mcros[i] + ing[dic[i]] for i in range(len(mcros))]
 
-            else
+            else:
 
                 break
 
