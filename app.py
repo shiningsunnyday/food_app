@@ -206,8 +206,10 @@ def spectral_cluster(array, num_meals):
 
 @app.route('/cluster/', methods = ['GET'])
 def api_cluster():
+
+    return jsonify("Hi")
     
-    string = str(request.args.get('ingredients'))
+    '''string = str(request.args.get('ingredients'))
     string = string.replace('_', ' ')
     num_meals = int(request.args.get('num_meals'))
 
@@ -241,7 +243,7 @@ def api_cluster():
         "requirements": [int(y) for y in requirements[i]]
         
         }
-                    for i in range(len(x))]})
+                    for i in range(len(x))]})'''
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
