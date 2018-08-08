@@ -35,14 +35,8 @@ def generate(target_macros_processed):
     
     while True:
 
-        try:
-            rand = random.randint(0, len(dfs_name))
-            ing = dfs_name.iloc[rand]
-            
-        except IndexError:
-
-            rand = random.randint(0, len(dfs_name))
-            ing = dfs_name.iloc[rand]
+        rand = random.randint(0, len(dfs_name))
+        ing = dfs_name.iloc[rand]
 
         if ing['calories']/(mcros[0] + 1) < 0.1 :
 
@@ -61,7 +55,7 @@ def generate(target_macros_processed):
 
                 break
 
-    for i in range(20):
+    for i in range(5):
 
         try:
             ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
@@ -77,7 +71,7 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
     ing_to_add = ""
     boo = True
     
-    for ing in values_copy.keys():
+    for ing in values.keys():
 
         effect = sum([abs(values[ing][i] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
@@ -105,7 +99,6 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
     else:
         
         ingredients.remove(ing_to_add)
-        del values[ing_to_add[0]]
     
     return ingredients, [mcros[i] + ing_to_add[2][dic[i]] if boo else mcros[i] - ing_to_add[2][dic[i]] for i in range(len(dic))]
 
@@ -127,11 +120,10 @@ def api_macros2():
 def api_macros_(target_macros):
 
     target_macros_processed = list(map(int, target_macros.split('_')))
-    error = -10000
-    avg_percent_off = 50
+    avg_percent_off = 100
     closeness_measure = 0
 
-    for i in range(50):
+    for i in range(10):
         
         ingredients, mcros = generate(target_macros_processed)
 
