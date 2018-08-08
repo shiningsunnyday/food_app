@@ -165,7 +165,7 @@ def api_fix(diff):
     net_effect = minimal_error
     ing_to_add = ""
     
-    for ing in values_copy.keys():
+    for ing in values.keys():
 
         effect = sum([abs(values[ing][i] + diff_to_fix[i]) for i in range(4)])
 
