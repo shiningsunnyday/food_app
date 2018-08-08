@@ -75,7 +75,7 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
     ing_to_add = ""
     boo = True
     
-    for ing in values.keys():
+    for ing in values_copy.keys():
 
         effect = sum([abs(values[ing][i] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
@@ -144,11 +144,6 @@ def api_macros_(target_macros):
             closeness_measure = y
             final_mcros = mcros
             final_ingredients = ingredients
-            
-    print(final_mcros)
-    print(target_macros_processed)
-    print("Avg percent off", avg_percent_off)           
-    print("Closeness measure", closeness_measure)
 
 
     return jsonify({"requirements": [int(x) for x in final_mcros],
@@ -176,7 +171,7 @@ def api_fix(diff):
     net_effect = minimal_error
     ing_to_add = ""
     
-    for ing in values.keys():
+    for ing in values_copy.keys():
 
         effect = sum([abs(values[ing][i] + diff_to_fix[i]) for i in range(4)])
 
