@@ -34,7 +34,7 @@ requests==2.19.1
 scikit-learn==0.19.1
 scipy==1.1.0
 six==1.11.0
-sklearn==0.0
+sklearn==0.19.1
 SQLAlchemy==1.2.10
 urllib3==1.23
 virtualenv==16.0.0

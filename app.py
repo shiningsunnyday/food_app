@@ -211,9 +211,7 @@ def api_cluster():
     string = string.replace('_', ' ')
     num_meals = int(request.args.get('num_meals'))
 
-    return jsonify([string, str(num_meals)])
-
-    '''listToNames = string.split(',')
+    listToNames = string.split(',')
     x = spectral_cluster(listToNames, num_meals)
     ingredients = [[] for i in range(num_meals)]
     requirements = [[0, 0, 0, 0] for i in range(num_meals)]
@@ -235,15 +233,15 @@ def api_cluster():
             requirements[i][0] += ing_to_add[2]['calories']
             requirements[i][1] += ing_to_add[2]['protein']
             requirements[i][2] += ing_to_add[2]['fat']
-            requirements[i][3] += ing_to_add[2]['carbs']'''
+            requirements[i][3] += ing_to_add[2]['carbs']
     
-    '''return jsonify({"listOfIngredientLists": [{
+    return jsonify({"listOfIngredientLists": [{
 
         "listToDisplay": ingredients[i],
         "requirements": [int(y) for y in requirements[i]]
         
         }
-                    for i in range(len(x))]})'''
+                    for i in range(len(x))]})
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
