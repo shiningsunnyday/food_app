@@ -17,8 +17,8 @@ values_copy = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', '
 dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
 laplacian_matrix = pd.read_csv('laplacian_matrix.csv').iloc[:,1:]
 
-name_dic = dict(dfs.loc[:]['Ingredients'])
-name_dic = {name_dic[x]: x for x in name_dic}
+test_dic = dict(dfs.loc[:]['Ingredients'])
+name_dic = {test_dic[x]: x for x in test_dic.keys()}
 
 def laplacian(array):
     
