@@ -213,6 +213,8 @@ def api_cluster():
 
     listToNames = string.split(',')
     x = spectral_cluster(listToNames, num_meals)
+
+    
     ingredients = [[] for i in range(num_meals)]
     requirements = [[0, 0, 0, 0] for i in range(num_meals)]
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
@@ -220,7 +222,7 @@ def api_cluster():
     for i in range(len(x)):
         for j in x[i]:
             ing_to_add = [j, str(dfs_name.loc[j]['serving_qty']) + ' ' + str(dfs_name.loc[j]['serving_unit']),
-                  dict(zip(dic.values(), values[j]))]
+                  dict(zip(dic.values(), values_copy[j]))]
             
             ingredients[i].append({
                         'label': str(ing_to_add[0]),
