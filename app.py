@@ -13,7 +13,7 @@ df = pd.read_csv('aifood_dfs_clean.csv')
 dfs = df.loc[:, 'Ingredients':].dropna()
 dfs_name = dfs.set_index("Ingredients", drop = False)
 values = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
-values_copy = values
+values_copy = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
 dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
 laplacian_matrix = pd.read_csv('laplacian_matrix.csv').iloc[:,1:]
 
