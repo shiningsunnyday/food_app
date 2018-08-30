@@ -32,6 +32,8 @@ def generate(target_macros_processed):
 
     mcros = [0, 0, 0, 0]
     ingredients = []
+    ingredients.append("")
+    ingredients = []
     
     while True:
 
