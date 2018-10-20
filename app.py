@@ -155,7 +155,6 @@ def api_macros_(target_macros):
                         for ing in final_ingredients
                         ]
                     })
-    
 
 
 @app.route('/diff/<diff>', methods = ['GET'])
@@ -205,6 +204,18 @@ def spectral_cluster(array, num_meals):
     unique, counts = np.unique(labels, return_counts=True)
     return [[x for x in dic.keys() if dic[x] == j] for j in range(num_meals)]
 
+@app.route('/returninfo/', methods = ['GET'])
+def returnInfo(returnInfo):
+
+    infoList = requests.args.get('returninfo')
+    infoList = [[ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
+                dict(zip(dic.values(), values[ing_to_add]))] for ing_to_add in infoList]
+    return jsonify([{'label': x[0],
+                'amount': x[1],
+                'calories': x[2]['calories'],
+                'protein': x[2]['protein'],
+                'fat': x[2]['fat'],
+                'carbs': x[2]['carbs']} for x in infoList])
 
 @app.route('/cluster/', methods = ['GET'])
 def api_cluster():
