@@ -204,18 +204,20 @@ def spectral_cluster(array, num_meals):
     unique, counts = np.unique(labels, return_counts=True)
     return [[x for x in dic.keys() if dic[x] == j] for j in range(num_meals)]
 
-@app.route('/returninfo/', methods = ['GET'])
-def returnInfo(returnInfo):
+@app.route('/returninfo/<returninfo>', methods = ['GET'])
+def returninfo(returninfo):
 
-    infoList = requests.args.get('returninfo')
-    infoList = [[[ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
-                dict(zip(dic.values(), values[ing_to_add]))] for ing_to_add in ing_list] for ing_list in infoList]
-    return jsonify([[{'label': x[0],
-                'amount': x[1],
-                'calories': x[2]['calories'],
-                'protein': x[2]['protein'],
-                'fat': x[2]['fat'],
-                'carbs': x[2]['carbs']} for x in ing_list] for ing_list in infoList])
+    returninfo = returninfo.replace('_', ' ')
+    infoList = list(map(str, returninfo.split(",")))
+    return jsonify({ing_to_add:
+                   
+                   {'label': ing_to_add,
+                'amount': str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
+                'calories': dict(zip(dic.values(), values[ing_to_add]))['calories'],
+                'protein': dict(zip(dic.values(), values[ing_to_add]))['protein'],
+                'fat': dict(zip(dic.values(), values[ing_to_add]))['fat'],
+                'carbs': dict(zip(dic.values(), values[ing_to_add]))['carbs']} for ing_to_add in infoList
+                   })
 
 @app.route('/cluster/', methods = ['GET'])
 def api_cluster():
