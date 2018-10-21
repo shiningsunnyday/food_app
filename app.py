@@ -207,8 +207,11 @@ def spectral_cluster(array, num_meals):
 @app.route('/returninfo/<returninfo>', methods = ['GET'])
 def returninfo(returninfo):
 
-    returninfo = returninfo.replace('_', ' ')
     infoList = list(map(str, returninfo.split(",")))
+    for x in range(infoList):
+    
+        infoList[x] = infoList[x].replace("_", " ")
+    
     return jsonify({ing_to_add:
                    
                    {'label': ing_to_add,
