@@ -218,10 +218,10 @@ def returninfo(returninfo):
                    
                    {'label': str(ing_to_add),
                 'amount': str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
-                'calories': dict(zip(dic.values(), values[ing_to_add]))['calories'],
-                'protein': dict(zip(dic.values(), values[ing_to_add]))['protein'],
-                'fat': dict(zip(dic.values(), values[ing_to_add]))['fat'],
-                'carbs': dict(zip(dic.values(), values[ing_to_add]))['carbs']} for ing_to_add in infoList
+                'calories': dict(zip(dic.values(), values_copy[ing_to_add]))['calories'],
+                'protein': dict(zip(dic.values(), values_copy[ing_to_add]))['protein'],
+                'fat': dict(zip(dic.values(), values_copy[ing_to_add]))['fat'],
+                'carbs': dict(zip(dic.values(), values_copy[ing_to_add]))['carbs']} for ing_to_add in infoList
                    })
 
 @app.route('/cluster/', methods = ['GET'])
