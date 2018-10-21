@@ -207,14 +207,16 @@ def spectral_cluster(array, num_meals):
 @app.route('/returninfo/<returninfo>', methods = ['GET'])
 def returninfo(returninfo):
 
+    dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     infoList = list(map(str, returninfo.split(",")))
-    for x in range(infoList):
+    for x in range(len(infoList)):
     
         infoList[x] = infoList[x].replace("_", " ")
     
+    
     return jsonify({ing_to_add:
                    
-                   {'label': ing_to_add,
+                   {'label': str(ing_to_add),
                 'amount': str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
                 'calories': dict(zip(dic.values(), values[ing_to_add]))['calories'],
                 'protein': dict(zip(dic.values(), values[ing_to_add]))['protein'],
