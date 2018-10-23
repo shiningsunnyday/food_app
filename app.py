@@ -24,7 +24,7 @@ def laplacian(array):
 
     arr = [name_dic[x] for x in array]
     laplacian = laplacian_matrix.iloc[arr, arr].values
-    laplacian = np.array([[float(x) for x in laplacian[i]] for i in range(len(laplacian))])
+    laplacian = np.array([[-float(x) for x in laplacian[i]] for i in range(len(laplacian))])
     return laplacian
 
 def generate(target_macros_processed):
