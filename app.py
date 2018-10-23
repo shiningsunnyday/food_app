@@ -21,9 +21,10 @@ test_dic = dict(dfs.loc[:]['Ingredients'])
 name_dic = {test_dic[x]: x for x in test_dic.keys()}
 
 def laplacian(array):
-    
+
     arr = [name_dic[x] for x in array]
     laplacian = laplacian_matrix.iloc[arr, arr].values
+    laplacian = np.array([[float(x) for x in laplacian[i]] for i in range(len(laplacian))])
     return laplacian
 
 def generate(target_macros_processed):
@@ -201,6 +202,7 @@ def k_means(X, n_clusters):
 def spectral_cluster(array, num_meals):
     
     X = laplacian(array)
+    print(X)
     eigen_vals, eigen_vects = linalg.eigs(X, num_meals)
     X = eigen_vects.real
     rows_norm = np.linalg.norm(X, axis=1, ord=2)
