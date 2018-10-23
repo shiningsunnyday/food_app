@@ -9,13 +9,13 @@ from sklearn.cluster import KMeans
 
 app = Flask(__name__)
 
-df = pd.read_csv('aifood_dfs_clean.csv')
+df = pd.read_csv('new_ingredients_test.csv')
 dfs = df.loc[:, 'Ingredients':].dropna()
 dfs_name = dfs.set_index("Ingredients", drop = False)
 values = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
 values_copy = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
 dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
-laplacian_matrix = pd.read_csv('laplacian_matrix.csv').iloc[:,1:]
+laplacian_matrix = pd.read_csv('new_laplacian_matrix.csv').iloc[:,1:]
 
 test_dic = dict(dfs.loc[:]['Ingredients'])
 name_dic = {test_dic[x]: x for x in test_dic.keys()}
@@ -37,7 +37,9 @@ def generate(target_macros_processed):
     
     while True:
 
-        rand = random.randint(0, len(dfs_name))
+        current_length = len(dfs_name)
+        rand = random.randint(0, current_length-1)
+        print(rand)
         ing = dfs_name.iloc[rand]
 
         if ing['calories']/(mcros[0] + 1) < 0.1 :
@@ -126,12 +128,16 @@ def api_macros_(target_macros):
     closeness_measure = 0
 
     for i in range(10):
-        
+
+        #fetches ingredients and mcros with target_macros
         ingredients, mcros = generate(target_macros_processed)
 
+        print(ingredients)
+        #gets average error
         x = sum([
             100 * abs(mcros[i] - target_macros_processed[i])/(target_macros_processed[i]) for i in range(len(mcros))]) / 4.0
         food_arr = laplacian([ingredient[0] for ingredient in ingredients])
+        print(x)
         y = sum(sum(x) for x in food_arr)/len(food_arr)
         
         if x < avg_percent_off and y > closeness_measure:
@@ -147,10 +153,10 @@ def api_macros_(target_macros):
                     {
                         'label': str(ing[0]),
                         'amount': str(ing[1]),
-                        'calories': ing[2]['calories'],
-                        'protein': ing[2]['protein'],
-                        'fat': ing[2]['fat'],
-                        'carbs': ing[2]['carbs']
+                        'calories': int(ing[2]['calories']),
+                        'protein': int(ing[2]['protein']),
+                        'fat': int(ing[2]['fat']),
+                        'carbs': int(ing[2]['carbs'])
                     }
                         for ing in final_ingredients
                         ]
