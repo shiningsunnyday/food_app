@@ -20,11 +20,16 @@ laplacian_matrix = pd.read_csv('new_laplacian_matrix.csv').iloc[:,1:]
 test_dic = dict(dfs.loc[:]['Ingredients'])
 name_dic = {test_dic[x]: x for x in test_dic.keys()}
 
-def laplacian(array):
+def laplacian(array, cluster):
 
     arr = [name_dic[x] for x in array]
     laplacian = laplacian_matrix.iloc[arr, arr].values
-    laplacian = np.array([[-float(x) for x in laplacian[i]] for i in range(len(laplacian))])
+
+    if cluster:
+        laplacian = np.array([[-float(x) for x in laplacian[i]] for i in range(len(laplacian))])
+    else:
+        laplacian = np.array([[float(x) for x in laplacian[i]] for i in range(len(laplacian))])
+    
     return laplacian
 
 def generate(target_macros_processed):
@@ -137,7 +142,7 @@ def api_macros_(target_macros):
         #gets average error
         x = sum([
             100 * abs(mcros[i] - target_macros_processed[i])/(target_macros_processed[i]) for i in range(len(mcros))]) / 4.0
-        food_arr = laplacian([ingredient[0] for ingredient in ingredients])
+        food_arr = laplacian([ingredient[0] for ingredient in ingredients], False)
         print(x)
         y = sum(sum(x) for x in food_arr)/len(food_arr)
         
@@ -201,7 +206,7 @@ def k_means(X, n_clusters):
 
 def spectral_cluster(array, num_meals):
     
-    X = laplacian(array)
+    X = laplacian(array, True)
     print(X)
     eigen_vals, eigen_vects = linalg.eigs(X, num_meals)
     X = eigen_vects.real
