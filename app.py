@@ -126,7 +126,7 @@ from add_new_ingredient import add_new
 @app.route('/add/<x>', methods = ['GET'])
 def api_add(x):
 
-    return add_new(x)
+    return add_new(x.replace('_', ' ')
 
 @app.route('/macros', methods = ['GET'])
 def api_macros2():
