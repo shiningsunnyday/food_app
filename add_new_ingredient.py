@@ -21,7 +21,7 @@ def add_new(x):
     food = body['foods'][0]
 
     dic = {'label': str(x),
-           'amount': str(food["serving_qty"]) + ' of ' + str(food["serving_unit"])
+           'amount': str(food["serving_qty"]) + ' ' + str(food["serving_unit"]),
            'calories': int(food["nf_calories"]),
            'protein': int(food["nf_protein"]),
            'fat': int(food["nf_total_fat"]),
