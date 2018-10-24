@@ -5,7 +5,6 @@ import json
 
 def add_new(x):
 
-    x.replace('_', ' ')
     url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
     headers = {
         
