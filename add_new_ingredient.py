@@ -20,7 +20,13 @@ def add_new(x):
     body = json.loads(r.text)
     food = body['foods'][0]
 
-    dic = {'label': x, 'calories': food["nf_calories"], 'fat': food["nf_total_fat"], 'protein': food["nf_protein"], 'carbs': food["nf_total_carbohydrate"], 'amount': str(food["serving_qty"]) + ' of ' + str(food["serving_unit"])}
+    dic = {'label': str(x),
+           'amount': str(food["serving_qty"]) + ' of ' + str(food["serving_unit"])
+           'calories': int(food["nf_calories"]),
+           'protein': int(food["nf_protein"]),
+           'fat': int(food["nf_total_fat"]),
+           'carbs': int(food["nf_total_carbohydrate"]),
+           }
     return jsonify(dic)
 
 
