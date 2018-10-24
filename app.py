@@ -121,6 +121,13 @@ def api_macros():
 
     return jsonify("Hi")
 
+from add_new_ingredient import add_new
+
+@app.route('/add/<x>', methods = ['GET'])
+def api_add(x):
+
+    return add_new(x)
+
 @app.route('/macros', methods = ['GET'])
 def api_macros2():
 
