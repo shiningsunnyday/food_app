@@ -32,6 +32,17 @@ def laplacian(array, cluster):
     
     return laplacian
 
+@app.route('/returnall/', methods = ['GET'])
+def returnall():
+
+    alling = []
+    for i in range(len(dfs_name)):
+        ing = dfs_name.iloc[i]
+        alling.append({"label": str(ing['Ingredients']), "amount": str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
+                                    'calories': float(ing['calories']), 'protein': float(ing['protein']), 'fat': float(ing['fat']), 'carbs': float(ing['carbs'])})
+
+    return jsonify(alling)
+
 def generate(target_macros_processed):
 
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
@@ -132,6 +143,8 @@ def api_add(x):
 def api_macros2():
 
     return jsonify("Baby")
+
+    
 
 @app.route('/macros/<target_macros>', methods = ['GET'])
 def api_macros_(target_macros):
