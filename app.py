@@ -65,7 +65,7 @@ def generate(target_macros_processed):
 
         else:
 
-            if mcros[0] + ing['calories'] < target_macros_processed[0] * 1.1:
+            if mcros[0] + ing['calories'] < target_macros_processed[0] * 1.5:
             
                 ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
                                     {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
@@ -169,10 +169,9 @@ def api_macros_(target_macros):
         print(x)
         y = sum(sum(x) for x in food_arr)/len(food_arr)
         
-        if x < avg_percent_off and y > closeness_measure:
+        if x < avg_percent_off:
 
             avg_percent_off = x
-            closeness_measure = y
             final_mcros = mcros
             final_ingredients = ingredients
 
