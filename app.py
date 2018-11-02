@@ -90,14 +90,15 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     minimal_error = sum([abs(mcros[i] - target_mcros[i]) for i in range(1, preferences)])
     ing_to_add = ""
-    boo = True
+    ing_to_remove = ""
+    b = 0
     
     for ing in values.keys():
 
         effect = sum([abs(values[ing][i] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
         if effect < minimal_error:
-
+            b = 1
             minimal_error = effect
             ing_to_add = ing
 
@@ -107,21 +108,24 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
         subtract_effect = sum([abs(-ing[2][dic[i]] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
         if subtract_effect < minimal_error:
-
+    
             minimal_error = subtract_effect
-            boo = False
-            ing_to_add = ing_name
+            b = 2
+            ing_to_remove = ing
 
     ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']), dict(zip(dic.values(), values[ing_to_add]))]           
             
-    if boo:
+    if b == 1:
         values.pop(ing_to_add[0])
         ingredients.append(ing_to_add)
-    else:
+    elif b == 2:
         
-        ingredients.remove(ing_to_add)
+        ingredients.remove(ing_to_remove)
+
+    else:
+        pass
     
-    return ingredients, [mcros[i] + ing_to_add[2][dic[i]] if boo else mcros[i] - ing_to_add[2][dic[i]] for i in range(len(dic))]
+    return ingredients, [mcros[i] + ing_to_add[2][dic[i]] if b == 1 else mcros[i] - ing_to_remove[2][dic[i]] if b == 2 else mcros[i] for i in range(len(dic))]
 
 @app.route('/', methods = ['GET'])
 def api_root():
