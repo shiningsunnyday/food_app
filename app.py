@@ -76,7 +76,7 @@ def generate(target_macros_processed):
 
                 break
 
-    for i in range(5):
+    for i in range(20):
 
         try:
             ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
