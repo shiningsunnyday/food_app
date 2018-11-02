@@ -134,10 +134,13 @@ def api_macros():
 
 from add_new_ingredient import add_new
 
-@app.route('/add/<x>', methods = ['GET'])
-def api_add(x):
+@app.route('/add/', methods = ['GET'])
+def api_add():
 
-    return add_new(x.replace('_', ' '))
+    x = str(request.args.get('ingredient'))
+    boo = bool(int(request.args.get('boo')))
+    print(boo)
+    return add_new(x.replace('_', ' '), boo)
 
 @app.route('/macros', methods = ['GET'])
 def api_macros2():
