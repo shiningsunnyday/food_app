@@ -56,7 +56,6 @@ def generate(target_macros_processed):
 
         current_length = len(dfs_name)
         rand = random.randint(0, current_length-1)
-        print(rand)
         ing = dfs_name.iloc[rand]
 
         if ing['calories']/(mcros[0] + 1) < 0.1 :
@@ -65,7 +64,7 @@ def generate(target_macros_processed):
 
         else:
 
-            if mcros[0] + ing['calories'] < target_macros_processed[0] * 1.5:
+            if mcros[0] + ing['calories'] < target_macros_processed[0]:
             
                 ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
                                     {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
@@ -81,6 +80,7 @@ def generate(target_macros_processed):
         try:
             ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
         except KeyError or IndexError:
+            print("BAD ITERATE")
             pass
 
     return ingredients, mcros
@@ -114,9 +114,9 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
             ing_to_remove = ing
 
     ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']), dict(zip(dic.values(), values[ing_to_add]))]           
-            
+    print(b)
     if b == 1:
-        values.pop(ing_to_add[0])
+        
         ingredients.append(ing_to_add)
     elif b == 2:
         
@@ -165,12 +165,12 @@ def api_macros_(target_macros):
         #fetches ingredients and mcros with target_macros
         ingredients, mcros = generate(target_macros_processed)
 
-        print(ingredients)
+
         #gets average error
         x = sum([
             100 * abs(mcros[i] - target_macros_processed[i])/(target_macros_processed[i]) for i in range(len(mcros))]) / 4.0
         food_arr = laplacian([ingredient[0] for ingredient in ingredients], False)
-        print(x)
+
         y = sum(sum(x) for x in food_arr)/len(food_arr)
         
         if x < avg_percent_off:
