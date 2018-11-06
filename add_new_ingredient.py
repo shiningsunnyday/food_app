@@ -32,10 +32,10 @@ def add_new(x, boo):
 
     dic = {'label': str(x),
            'amount': str(food["serving_qty"]) + ' ' + str(food["serving_unit"]),
-           'calories': float(food["nf_calories"]),
-           'protein': float(food["nf_protein"]),
-           'fat': float(food["nf_total_fat"]),
-           'carbs': float(food["nf_total_carbohydrate"]),
+           'calories': int(food["nf_calories"]),
+           'protein': int(food["nf_protein"]),
+           'fat': int(food["nf_total_fat"]),
+           'carbs': int(food["nf_total_carbohydrate"]),
            }
 
     if boo:
