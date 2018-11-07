@@ -25,10 +25,7 @@ def laplacian(array, cluster):
     arr = [name_dic[x] for x in array]
     laplacian = laplacian_matrix.iloc[arr, arr].values
 
-    if cluster:
-        laplacian = np.array([[-float(x) for x in laplacian[i]] for i in range(len(laplacian))])
-    else:
-        laplacian = np.array([[float(x) for x in laplacian[i]] for i in range(len(laplacian))])
+    laplacian = np.array([[float(x) for x in laplacian[i]] for i in range(len(laplacian))])
     
     return laplacian
 
