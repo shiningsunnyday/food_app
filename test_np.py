@@ -5,7 +5,7 @@ laplacian = pd.read_csv('./new_laplacian_matrix.csv').iloc[:,1:].copy()
 ing_dic = dict(pd.read_csv('./new_ingredients_test.csv').copy().loc[:,"Ingredients"])
 
 print(laplacian)
-for col in range(21,len(laplacian)):
+for col in range(37,len(laplacian)):
 
     for row in range(col):
 
