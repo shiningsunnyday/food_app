@@ -26,7 +26,7 @@ def laplacian(array, cluster):
     laplacian = laplacian_matrix.iloc[arr, arr].values
 
     laplacian = np.array([[float(x) for x in laplacian[i]] for i in range(len(laplacian))])
-    
+
     return laplacian
 
 @app.route('/returnall/', methods = ['GET'])
@@ -48,29 +48,23 @@ def generate(target_macros_processed):
     ingredients = []
     ingredients.append("")
     ingredients = []
-    
+
     while True:
 
         current_length = len(dfs_name)
         rand = random.randint(0, current_length-1)
         ing = dfs_name.iloc[rand]
 
-        if ing['calories']/(mcros[0] + 1) < 0.1 :
+        if mcros[0] + ing['calories'] < target_macros_processed[0]:
 
-            pass
+            ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
+                                {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
+
+            mcros = [mcros[i] + ing[dic[i]] for i in range(len(mcros))]
 
         else:
 
-            if mcros[0] + ing['calories'] < target_macros_processed[0]:
-            
-                ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
-                                    {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
-                    
-                mcros = [mcros[i] + ing[dic[i]] for i in range(len(mcros))]
-
-            else:
-
-                break
+            break
 
     for i in range(20):
 
@@ -78,7 +72,7 @@ def generate(target_macros_processed):
             ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
         except KeyError or IndexError:
             print("BAD ITERATE")
-            pass
+
 
     return ingredients, mcros
 
@@ -86,10 +80,12 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
 
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     minimal_error = sum([abs(mcros[i] - target_mcros[i]) for i in range(1, preferences)])
+
+    print("CURRENT ERROR IS ", minimal_error)
     ing_to_add = ""
     ing_to_remove = ""
     b = 0
-    
+
     for ing in values.keys():
 
         effect = sum([abs(values[ing][i] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
@@ -98,30 +94,40 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
             b = 1
             minimal_error = effect
             ing_to_add = ing
+            ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']), dict(zip(dic.values(), values[ing_to_add]))]
+
 
     for ing in ingredients:
 
         ing_name = ing[0]
         subtract_effect = sum([abs(-ing[2][dic[i]] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
+        print("IF we try removing", ing_name, "we can get an error of", subtract_effect)
+
         if subtract_effect < minimal_error:
-    
+
             minimal_error = subtract_effect
             b = 2
             ing_to_remove = ing
+            print("CANDIDATE TO REMOVE", ing_to_remove)
 
-    ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']), dict(zip(dic.values(), values[ing_to_add]))]           
+    print("LIKE THIS", ing_to_add)
     print(b)
     if b == 1:
-        
+
         ingredients.append(ing_to_add)
+        print("ADDED",ing_to_add)
+
     elif b == 2:
-        
+
+        print(len(ingredients))
         ingredients.remove(ing_to_remove)
+        print(len(ingredients))
+        print("REMOVED",ing_to_remove)
 
     else:
         pass
-    
+
     return ingredients, [mcros[i] + ing_to_add[2][dic[i]] if b == 1 else mcros[i] - ing_to_remove[2][dic[i]] if b == 2 else mcros[i] for i in range(len(dic))]
 
 @app.route('/', methods = ['GET'])
@@ -148,7 +154,7 @@ def api_macros2():
 
     return jsonify("Baby")
 
-    
+
 
 @app.route('/macros/<target_macros>', methods = ['GET'])
 def api_macros_(target_macros):
@@ -157,19 +163,21 @@ def api_macros_(target_macros):
     avg_percent_off = 100
     closeness_measure = 0
 
+
     for i in range(10):
 
         #fetches ingredients and mcros with target_macros
         ingredients, mcros = generate(target_macros_processed)
-
-
+        if i == 0:
+            final_mcros = mcros
+            final_ingredients = ingredients
         #gets average error
         x = sum([
             100 * abs(mcros[i] - target_macros_processed[i])/(target_macros_processed[i]) for i in range(len(mcros))]) / 4.0
         food_arr = laplacian([ingredient[0] for ingredient in ingredients], False)
 
         y = sum(sum(x) for x in food_arr)/len(food_arr)
-        
+
         if x < avg_percent_off:
 
             avg_percent_off = x
@@ -200,7 +208,7 @@ def api_fix(diff):
     minimal_error = sum([abs(i) for i in diff_to_fix])
     net_effect = minimal_error
     ing_to_add = ""
-    
+
     for ing in values.keys():
 
         effect = sum([abs(values[ing][i] + diff_to_fix[i]) for i in range(4)])
@@ -209,7 +217,7 @@ def api_fix(diff):
 
             net_effect = effect
             ing_to_add = ing
-            
+
     ing_to_add = [ing_to_add, str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
                   dict(zip(dic.values(), values[ing_to_add]))]
     return jsonify({
@@ -222,13 +230,13 @@ def api_fix(diff):
                   })
 
 def k_means(X, n_clusters):
-    
+
     kmeans = KMeans(n_clusters=n_clusters, random_state=1231)
     return kmeans.fit(X).labels_
 
 
 def spectral_cluster(array, num_meals):
-    
+
     X = laplacian(array, True)
     print(X)
     eigen_vals, eigen_vects = linalg.eigs(X, num_meals)
@@ -246,12 +254,12 @@ def returninfo(returninfo):
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     infoList = list(map(str, returninfo.split(",")))
     for x in range(len(infoList)):
-    
+
         infoList[x] = infoList[x].replace("_", " ")
-    
-    
+
+
     return jsonify({ing_to_add:
-                   
+
                    {'label': str(ing_to_add),
                 'amount': str(dfs_name.loc[ing_to_add]['serving_qty']) + ' ' + str(dfs_name.loc[ing_to_add]['serving_unit']),
                 'calories': dict(zip(dic.values(), values_copy[ing_to_add]))['calories'],
@@ -270,7 +278,7 @@ def api_cluster():
     listToNames = string.split(',')
     x = spectral_cluster(listToNames, num_meals)
 
-    
+
     ingredients = [[] for i in range(num_meals)]
     requirements = [[0, 0, 0, 0] for i in range(num_meals)]
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
@@ -279,7 +287,7 @@ def api_cluster():
         for j in x[i]:
             ing_to_add = [j, str(dfs_name.loc[j]['serving_qty']) + ' ' + str(dfs_name.loc[j]['serving_unit']),
                   dict(zip(dic.values(), values_copy[j]))]
-            
+
             ingredients[i].append({
                         'label': str(ing_to_add[0]),
                         'amount': str(ing_to_add[1]),
@@ -292,16 +300,14 @@ def api_cluster():
             requirements[i][1] += ing_to_add[2]['protein']
             requirements[i][2] += ing_to_add[2]['fat']
             requirements[i][3] += ing_to_add[2]['carbs']
-    
+
     return jsonify({"listOfIngredientLists": [{
 
         "listToDisplay": ingredients[i],
         "requirements": [int(y) for y in requirements[i]]
-        
+
         }
                     for i in range(len(x))]})
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0")
-
-
