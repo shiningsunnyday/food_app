@@ -1,0 +1,1116 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgray\c0;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \CocoaLigature0 Last login: Sun Jan  6 13:40:28 on ttys000\
+DN0a1fe366:~ shiningsunnyday$ cd /Users/shiningsunnyday/Desktop/Food \
+DN0a1fe366:Food shiningsunnyday$ python\
+Python 3.6.5 |Anaconda custom (64-bit)| (default, Aug  3 2018, 14:28:41) \
+[GCC 4.2.1 Compatible Apple LLVM 7.3.0 (clang-703.0.31)] on darwin\
+Type "help", "copyright", "credits" or "license" for more information.\
+Intel(R) Distribution for Python is brought to you by Intel Corporation.\
+Please check out: https://software.intel.com/en-us/python-distribution\
+>>> import pandas as pd\
+>>> df = pd.read_csv('ingredients.csv')\
+>>> df.head()\
+   Unnamed: 0  Unnamed: 0.1  Unnamed: 0.1.1          ...           serving_qty  serving_unit  serving_weight_grams\
+0           0             0               0          ...                   1.0          head                 626.0\
+1           1             1               1          ...                   1.0         olive                   3.8\
+2           2             2               2          ...                   1.0  grape tomato                   7.9\
+3           3             3               3          ...                   1.0         clove                   3.0\
+4           4             4               4          ...                   1.0   tsp, ground                   2.3\
+\
+[5 rows x 32 columns]\
+>>> df.drop[:'Ingredients']\
+Traceback (most recent call last):\
+  File "<stdin>", line 1, in <module>\
+TypeError: 'method' object is not subscriptable\
+>>> df = df['Ingredients':]\
+Traceback (most recent call last):\
+  File "<stdin>", line 1, in <module>\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py", line 2673, in __getitem__\
+    indexer = convert_to_index_sliceable(self, key)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexing.py", line 2326, in convert_to_index_sliceable\
+    return idx._convert_slice_indexer(key, kind='getitem')\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 1711, in _convert_slice_indexer\
+    return slice(self._validate_indexer('slice', key.start, kind),\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 4128, in _validate_indexer\
+    self._invalid_indexer(form, key)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 1848, in _invalid_indexer\
+    kind=type(key)))\
+TypeError: cannot do slice indexing on <class 'pandas.core.indexes.range.RangeIndex'> with these indexers [Ingredients] of <class 'str'>\
+>>> df = df.loc['Ingredients':]\
+>>> df.head()\
+Empty DataFrame\
+Columns: [Unnamed: 0, Unnamed: 0.1, Unnamed: 0.1.1, Unnamed: 0.1.1.1, Unnamed: 0.1.1.1.1, Unnamed: 0.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Ingredients, calories, fat, protein, carbs, saturated fat, cholesterol, sodium, dietary fiber, sugars, potassium, p, serving_qty, serving_unit, serving_weight_grams]\
+Index: []\
+>>> df.columns\
+Index(['Unnamed: 0', 'Unnamed: 0.1', 'Unnamed: 0.1.1', 'Unnamed: 0.1.1.1',\
+       'Unnamed: 0.1.1.1.1', 'Unnamed: 0.1.1.1.1.1', 'Unnamed: 0.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1', 'Unnamed: 0.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1', 'Unnamed: 0.1.1.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1',\
+       'Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1', 'Ingredients', 'calories',\
+       'fat', 'protein', 'carbs', 'saturated fat', 'cholesterol', 'sodium',\
+       'dietary fiber', 'sugars', 'potassium', 'p', 'serving_qty',\
+       'serving_unit', 'serving_weight_grams'],\
+      dtype='object')\
+>>> columns = df.columns[:'Ingredients']\
+Traceback (most recent call last):\
+  File "<stdin>", line 1, in <module>\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 2074, in __getitem__\
+    return promote(getitem(key))\
+TypeError: slice indices must be integers or None or have an __index__ method\
+>>> df.loc['Ingredients':]\
+Empty DataFrame\
+Columns: [Unnamed: 0, Unnamed: 0.1, Unnamed: 0.1.1, Unnamed: 0.1.1.1, Unnamed: 0.1.1.1.1, Unnamed: 0.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Ingredients, calories, fat, protein, carbs, saturated fat, cholesterol, sodium, dietary fiber, sugars, potassium, p, serving_qty, serving_unit, serving_weight_grams]\
+Index: []\
+>>> df.loc[:,'Ingredients':]\
+Empty DataFrame\
+Columns: [Ingredients, calories, fat, protein, carbs, saturated fat, cholesterol, sodium, dietary fiber, sugars, potassium, p, serving_qty, serving_unit, serving_weight_grams]\
+Index: []\
+>>> df.loc['Ingredients':,:]\
+Empty DataFrame\
+Columns: [Unnamed: 0, Unnamed: 0.1, Unnamed: 0.1.1, Unnamed: 0.1.1.1, Unnamed: 0.1.1.1.1, Unnamed: 0.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Ingredients, calories, fat, protein, carbs, saturated fat, cholesterol, sodium, dietary fiber, sugars, potassium, p, serving_qty, serving_unit, serving_weight_grams]\
+Index: []\
+>>> df.head()\
+Empty DataFrame\
+Columns: [Unnamed: 0, Unnamed: 0.1, Unnamed: 0.1.1, Unnamed: 0.1.1.1, Unnamed: 0.1.1.1.1, Unnamed: 0.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Ingredients, calories, fat, protein, carbs, saturated fat, cholesterol, sodium, dietary fiber, sugars, potassium, p, serving_qty, serving_unit, serving_weight_grams]\
+Index: []\
+>>> df = pd.read_csv('ingredients.csv')\
+>>> df.head()\
+   Unnamed: 0  Unnamed: 0.1  Unnamed: 0.1.1          ...           serving_qty  serving_unit  serving_weight_grams\
+0           0             0               0          ...                   1.0          head                 626.0\
+1           1             1               1          ...                   1.0         olive                   3.8\
+2           2             2               2          ...                   1.0  grape tomato                   7.9\
+3           3             3               3          ...                   1.0         clove                   3.0\
+4           4             4               4          ...                   1.0   tsp, ground                   2.3\
+\
+[5 rows x 32 columns]\
+>>> df.loc['Ingredients':,:]\
+Empty DataFrame\
+Columns: [Unnamed: 0, Unnamed: 0.1, Unnamed: 0.1.1, Unnamed: 0.1.1.1, Unnamed: 0.1.1.1.1, Unnamed: 0.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Unnamed: 0.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1, Ingredients, calories, fat, protein, carbs, saturated fat, cholesterol, sodium, dietary fiber, sugars, potassium, p, serving_qty, serving_unit, serving_weight_grams]\
+Index: []\
+>>> df = pd.read_csv('ingredients.csv')\
+>>> df.loc[:,'Ingredients':]\
+                                            Ingredients          ...           serving_weight_grams\
+0                                       romaine lettuce          ...                         626.00\
+1                                          black olives          ...                           3.80\
+2                                        grape tomatoes          ...                           7.90\
+3                                                garlic          ...                           3.00\
+4                                                pepper          ...                           2.30\
+5                                          purple onion          ...                          94.00\
+6                                             seasoning          ...                           1.20\
+7                                        garbanzo beans          ...                         164.00\
+8                                  feta cheese crumbles          ...                          28.35\
+9                                           plain flour          ...                         125.00\
+10                                        ground pepper          ...                           2.30\
+11                                                 salt          ...                           1.50\
+12                                             tomatoes          ...                         123.00\
+13                                  ground black pepper          ...                           2.30\
+14                                                thyme          ...                           0.80\
+15                                                 eggs          ...                          50.00\
+16                                       green tomatoes          ...                         123.00\
+17                                     yellow corn meal          ...                         122.00\
+18                                                 milk          ...                         245.00\
+19                                        vegetable oil          ...                          13.60\
+20                                            mayonaise          ...                          13.80\
+21                                          cooking oil          ...                          14.00\
+22                                        green chilies          ...                          45.00\
+23                              grilled chicken breasts          ...                         192.00\
+24                                        garlic powder          ...                           3.10\
+25                                         yellow onion          ...                          94.00\
+26                                            soy sauce          ...                          16.00\
+27                                               butter          ...                          14.20\
+28                                       chicken livers          ...                          44.00\
+29                                                water          ...                         237.00\
+...                                                 ...          ...                            ...\
+6684                                         puff paste          ...                            NaN\
+6685                                 Barilla Plus Pasta          ...                         124.00\
+6686                                turkey giblet stock          ...                         113.40\
+6687                                light chicken stock          ...                         240.00\
+6688                                         conchiglie          ...                            NaN\
+6689                 2% milk shredded mozzarella cheese          ...                         244.00\
+6690                                 Makers Mark Whisky          ...                          42.00\
+6691                  knorr pasta side   cheesi cheddar          ...                         124.00\
+6692                               whole grain baguette          ...                         324.00\
+6693                                 reduced sodium ham          ...                          28.00\
+6694                          whole wheat peasant bread          ...                         192.00\
+6695                              ranch-style seasoning          ...                          30.00\
+6696                                             ketjap          ...                            NaN\
+6697                         chocolate flavored liqueur          ...                           7.00\
+6698                       rotini pasta, cook and drain          ...                         107.00\
+6699                                               game          ...                            NaN\
+6700                                             tongue          ...                            NaN\
+6701                                              Daiya          ...                            NaN\
+6702                                          curry mix          ...                         234.57\
+6703            Kraft Slim Cut Mozzarella Cheese Slices          ...                          28.33\
+6704                           Oscar Mayer Cotto Salami          ...                           9.80\
+6705                                   Challenge Butter          ...                          14.20\
+6706                                       orange glaze          ...                         140.00\
+6707                    cholesterol free egg substitute          ...                         120.00\
+6708                                      ciabatta loaf          ...                         454.00\
+6709         Lipton\'ae Iced Tea Brew Family Size Tea Bags          ...                         367.00\
+6710  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...          ...                         170.00\
+6711                                          lop chong          ...                            NaN\
+6712                          tomato garlic pasta sauce          ...                         123.00\
+6713                            crushed cheese crackers          ...                            NaN\
+\
+[6714 rows x 15 columns]\
+>>> df = df.loc[:,'Ingredients':]\
+>>> df.head()\
+       Ingredients  calories   fat          ...           serving_qty  serving_unit  serving_weight_grams\
+0  romaine lettuce    106.42  1.88          ...                   1.0          head                 626.0\
+1     black olives      4.37  0.41          ...                   1.0         olive                   3.8\
+2   grape tomatoes      1.42  0.02          ...                   1.0  grape tomato                   7.9\
+3           garlic      4.47  0.02          ...                   1.0         clove                   3.0\
+4           pepper      5.77  0.07          ...                   1.0   tsp, ground                   2.3\
+\
+[5 rows x 15 columns]\
+>>> df[0]\
+Traceback (most recent call last):\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 3063, in get_loc\
+    return self._engine.get_loc(key)\
+  File "pandas/_libs/index.pyx", line 140, in pandas._libs.index.IndexEngine.get_loc\
+  File "pandas/_libs/index.pyx", line 162, in pandas._libs.index.IndexEngine.get_loc\
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1492, in pandas._libs.hashtable.PyObjectHashTable.get_item\
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1500, in pandas._libs.hashtable.PyObjectHashTable.get_item\
+KeyError: 0\
+\
+During handling of the above exception, another exception occurred:\
+\
+Traceback (most recent call last):\
+  File "<stdin>", line 1, in <module>\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py", line 2685, in __getitem__\
+    return self._getitem_column(key)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py", line 2692, in _getitem_column\
+    return self._get_item_cache(key)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/generic.py", line 2486, in _get_item_cache\
+    values = self._data.get(item)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/internals.py", line 4115, in get\
+    loc = self.items.get_loc(item)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 3065, in get_loc\
+    return self._engine.get_loc(self._maybe_cast_indexer(key))\
+  File "pandas/_libs/index.pyx", line 140, in pandas._libs.index.IndexEngine.get_loc\
+  File "pandas/_libs/index.pyx", line 162, in pandas._libs.index.IndexEngine.get_loc\
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1492, in pandas._libs.hashtable.PyObjectHashTable.get_item\
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1500, in pandas._libs.hashtable.PyObjectHashTable.get_item\
+KeyError: 0\
+>>> df.0\
+  File "<stdin>", line 1\
+    df.0\
+       ^\
+SyntaxError: invalid syntax\
+>>> df.iloc[0,:]\
+Ingredients             romaine lettuce\
+calories                         106.42\
+fat                                1.88\
+protein                             7.7\
+carbs                              20.6\
+saturated fat                      0.24\
+cholesterol                           0\
+sodium                            50.08\
+dietary fiber                     13.15\
+sugars                             7.45\
+potassium                       1546.22\
+p                                 187.8\
+serving_qty                           1\
+serving_unit                       head\
+serving_weight_grams                626\
+Name: 0, dtype: object\
+>>> df.head(0\
+... \
+KeyboardInterrupt\
+>>> df.head()\
+       Ingredients  calories   fat          ...           serving_qty  serving_unit  serving_weight_grams\
+0  romaine lettuce    106.42  1.88          ...                   1.0          head                 626.0\
+1     black olives      4.37  0.41          ...                   1.0         olive                   3.8\
+2   grape tomatoes      1.42  0.02          ...                   1.0  grape tomato                   7.9\
+3           garlic      4.47  0.02          ...                   1.0         clove                   3.0\
+4           pepper      5.77  0.07          ...                   1.0   tsp, ground                   2.3\
+\
+[5 rows x 15 columns]\
+>>> df.drop(['serving_unit'])\
+Traceback (most recent call last):\
+  File "<stdin>", line 1, in <module>\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py", line 3694, in drop\
+    errors=errors)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/generic.py", line 3108, in drop\
+    obj = obj._drop_axis(labels, axis, level=level, errors=errors)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/generic.py", line 3140, in _drop_axis\
+    new_axis = axis.drop(labels, errors=errors)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/indexes/base.py", line 4387, in drop\
+    'labels %s not contained in axis' % labels[mask])\
+KeyError: "labels ['serving_unit'] not contained in axis"\
+>>> df.drop(['serving_unit'], axis = 1)\
+                                            Ingredients          ...           serving_weight_grams\
+0                                       romaine lettuce          ...                         626.00\
+1                                          black olives          ...                           3.80\
+2                                        grape tomatoes          ...                           7.90\
+3                                                garlic          ...                           3.00\
+4                                                pepper          ...                           2.30\
+5                                          purple onion          ...                          94.00\
+6                                             seasoning          ...                           1.20\
+7                                        garbanzo beans          ...                         164.00\
+8                                  feta cheese crumbles          ...                          28.35\
+9                                           plain flour          ...                         125.00\
+10                                        ground pepper          ...                           2.30\
+11                                                 salt          ...                           1.50\
+12                                             tomatoes          ...                         123.00\
+13                                  ground black pepper          ...                           2.30\
+14                                                thyme          ...                           0.80\
+15                                                 eggs          ...                          50.00\
+16                                       green tomatoes          ...                         123.00\
+17                                     yellow corn meal          ...                         122.00\
+18                                                 milk          ...                         245.00\
+19                                        vegetable oil          ...                          13.60\
+20                                            mayonaise          ...                          13.80\
+21                                          cooking oil          ...                          14.00\
+22                                        green chilies          ...                          45.00\
+23                              grilled chicken breasts          ...                         192.00\
+24                                        garlic powder          ...                           3.10\
+25                                         yellow onion          ...                          94.00\
+26                                            soy sauce          ...                          16.00\
+27                                               butter          ...                          14.20\
+28                                       chicken livers          ...                          44.00\
+29                                                water          ...                         237.00\
+...                                                 ...          ...                            ...\
+6684                                         puff paste          ...                            NaN\
+6685                                 Barilla Plus Pasta          ...                         124.00\
+6686                                turkey giblet stock          ...                         113.40\
+6687                                light chicken stock          ...                         240.00\
+6688                                         conchiglie          ...                            NaN\
+6689                 2% milk shredded mozzarella cheese          ...                         244.00\
+6690                                 Makers Mark Whisky          ...                          42.00\
+6691                  knorr pasta side   cheesi cheddar          ...                         124.00\
+6692                               whole grain baguette          ...                         324.00\
+6693                                 reduced sodium ham          ...                          28.00\
+6694                          whole wheat peasant bread          ...                         192.00\
+6695                              ranch-style seasoning          ...                          30.00\
+6696                                             ketjap          ...                            NaN\
+6697                         chocolate flavored liqueur          ...                           7.00\
+6698                       rotini pasta, cook and drain          ...                         107.00\
+6699                                               game          ...                            NaN\
+6700                                             tongue          ...                            NaN\
+6701                                              Daiya          ...                            NaN\
+6702                                          curry mix          ...                         234.57\
+6703            Kraft Slim Cut Mozzarella Cheese Slices          ...                          28.33\
+6704                           Oscar Mayer Cotto Salami          ...                           9.80\
+6705                                   Challenge Butter          ...                          14.20\
+6706                                       orange glaze          ...                         140.00\
+6707                    cholesterol free egg substitute          ...                         120.00\
+6708                                      ciabatta loaf          ...                         454.00\
+6709         Lipton\'ae Iced Tea Brew Family Size Tea Bags          ...                         367.00\
+6710  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...          ...                         170.00\
+6711                                          lop chong          ...                            NaN\
+6712                          tomato garlic pasta sauce          ...                         123.00\
+6713                            crushed cheese crackers          ...                            NaN\
+\
+[6714 rows x 14 columns]\
+>>> df.drop(['serving_qty'], axis = 1)\
+                                            Ingredients          ...           serving_weight_grams\
+0                                       romaine lettuce          ...                         626.00\
+1                                          black olives          ...                           3.80\
+2                                        grape tomatoes          ...                           7.90\
+3                                                garlic          ...                           3.00\
+4                                                pepper          ...                           2.30\
+5                                          purple onion          ...                          94.00\
+6                                             seasoning          ...                           1.20\
+7                                        garbanzo beans          ...                         164.00\
+8                                  feta cheese crumbles          ...                          28.35\
+9                                           plain flour          ...                         125.00\
+10                                        ground pepper          ...                           2.30\
+11                                                 salt          ...                           1.50\
+12                                             tomatoes          ...                         123.00\
+13                                  ground black pepper          ...                           2.30\
+14                                                thyme          ...                           0.80\
+15                                                 eggs          ...                          50.00\
+16                                       green tomatoes          ...                         123.00\
+17                                     yellow corn meal          ...                         122.00\
+18                                                 milk          ...                         245.00\
+19                                        vegetable oil          ...                          13.60\
+20                                            mayonaise          ...                          13.80\
+21                                          cooking oil          ...                          14.00\
+22                                        green chilies          ...                          45.00\
+23                              grilled chicken breasts          ...                         192.00\
+24                                        garlic powder          ...                           3.10\
+25                                         yellow onion          ...                          94.00\
+26                                            soy sauce          ...                          16.00\
+27                                               butter          ...                          14.20\
+28                                       chicken livers          ...                          44.00\
+29                                                water          ...                         237.00\
+...                                                 ...          ...                            ...\
+6684                                         puff paste          ...                            NaN\
+6685                                 Barilla Plus Pasta          ...                         124.00\
+6686                                turkey giblet stock          ...                         113.40\
+6687                                light chicken stock          ...                         240.00\
+6688                                         conchiglie          ...                            NaN\
+6689                 2% milk shredded mozzarella cheese          ...                         244.00\
+6690                                 Makers Mark Whisky          ...                          42.00\
+6691                  knorr pasta side   cheesi cheddar          ...                         124.00\
+6692                               whole grain baguette          ...                         324.00\
+6693                                 reduced sodium ham          ...                          28.00\
+6694                          whole wheat peasant bread          ...                         192.00\
+6695                              ranch-style seasoning          ...                          30.00\
+6696                                             ketjap          ...                            NaN\
+6697                         chocolate flavored liqueur          ...                           7.00\
+6698                       rotini pasta, cook and drain          ...                         107.00\
+6699                                               game          ...                            NaN\
+6700                                             tongue          ...                            NaN\
+6701                                              Daiya          ...                            NaN\
+6702                                          curry mix          ...                         234.57\
+6703            Kraft Slim Cut Mozzarella Cheese Slices          ...                          28.33\
+6704                           Oscar Mayer Cotto Salami          ...                           9.80\
+6705                                   Challenge Butter          ...                          14.20\
+6706                                       orange glaze          ...                         140.00\
+6707                    cholesterol free egg substitute          ...                         120.00\
+6708                                      ciabatta loaf          ...                         454.00\
+6709         Lipton\'ae Iced Tea Brew Family Size Tea Bags          ...                         367.00\
+6710  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...          ...                         170.00\
+6711                                          lop chong          ...                            NaN\
+6712                          tomato garlic pasta sauce          ...                         123.00\
+6713                            crushed cheese crackers          ...                            NaN\
+\
+[6714 rows x 14 columns]\
+>>> df.head()\
+       Ingredients  calories   fat          ...           serving_qty  serving_unit  serving_weight_grams\
+0  romaine lettuce    106.42  1.88          ...                   1.0          head                 626.0\
+1     black olives      4.37  0.41          ...                   1.0         olive                   3.8\
+2   grape tomatoes      1.42  0.02          ...                   1.0  grape tomato                   7.9\
+3           garlic      4.47  0.02          ...                   1.0         clove                   3.0\
+4           pepper      5.77  0.07          ...                   1.0   tsp, ground                   2.3\
+\
+[5 rows x 15 columns]\
+>>> df = df.drop(['serving_qty', 'serving_unit'], axis = 1)\
+>>> df.head()\
+       Ingredients  calories   fat  protein          ...           sugars  potassium       p  serving_weight_grams\
+0  romaine lettuce    106.42  1.88     7.70          ...             7.45    1546.22  187.80                 626.0\
+1     black olives      4.37  0.41     0.03          ...             0.00       0.30    0.11                   3.8\
+2   grape tomatoes      1.42  0.02     0.07          ...             0.21      18.72    1.90                   7.9\
+3           garlic      4.47  0.02     0.19          ...             0.03      12.03    4.59                   3.0\
+4           pepper      5.77  0.07     0.24          ...             0.01      30.57    3.63                   2.3\
+\
+[5 rows x 13 columns]\
+>>> df["serving_weight_grams"]\
+0       626.00\
+1         3.80\
+2         7.90\
+3         3.00\
+4         2.30\
+5        94.00\
+6         1.20\
+7       164.00\
+8        28.35\
+9       125.00\
+10        2.30\
+11        1.50\
+12      123.00\
+13        2.30\
+14        0.80\
+15       50.00\
+16      123.00\
+17      122.00\
+18      245.00\
+19       13.60\
+20       13.80\
+21       14.00\
+22       45.00\
+23      192.00\
+24        3.10\
+25       94.00\
+26       16.00\
+27       14.20\
+28       44.00\
+29      237.00\
+         ...  \
+6684       NaN\
+6685    124.00\
+6686    113.40\
+6687    240.00\
+6688       NaN\
+6689    244.00\
+6690     42.00\
+6691    124.00\
+6692    324.00\
+6693     28.00\
+6694    192.00\
+6695     30.00\
+6696       NaN\
+6697      7.00\
+6698    107.00\
+6699       NaN\
+6700       NaN\
+6701       NaN\
+6702    234.57\
+6703     28.33\
+6704      9.80\
+6705     14.20\
+6706    140.00\
+6707    120.00\
+6708    454.00\
+6709    367.00\
+6710    170.00\
+6711       NaN\
+6712    123.00\
+6713       NaN\
+Name: serving_weight_grams, Length: 6714, dtype: float64\
+>>> df.sum(axis=1)\
+0       2567.54\
+1         37.36\
+2         31.04\
+3         25.89\
+4         45.13\
+5        343.92\
+6        385.91\
+7       1281.72\
+8        518.13\
+9        964.69\
+10        45.13\
+11       582.99\
+12       483.17\
+13        45.13\
+14         7.76\
+15       559.65\
+16       466.94\
+17      1368.91\
+18      1187.19\
+19       148.43\
+20       218.97\
+21       152.67\
+22       248.09\
+23      2442.05\
+24        68.18\
+25       343.92\
+26      1001.90\
+27       263.62\
+28       707.47\
+29       246.48\
+         ...   \
+6684       0.00\
+6685     497.39\
+6686    1135.32\
+6687    1015.56\
+6688       0.00\
+6689    1106.29\
+6690     141.96\
+6691     497.39\
+6692    4109.61\
+6693     555.42\
+6694    2306.45\
+6695     531.13\
+6696       0.00\
+6697     104.12\
+6698     429.22\
+6699       0.00\
+6700       0.00\
+6701       0.00\
+6702    1275.37\
+6703     452.44\
+6704     290.28\
+6705     263.62\
+6706     508.64\
+6707     775.20\
+6708    5224.04\
+6709     801.89\
+6710     839.01\
+6711       0.00\
+6712     483.17\
+6713       0.00\
+Length: 6714, dtype: float64\
+>>> df.sum(axis=0)\
+Ingredients             romaine lettuceblack olivesgrape tomatoesgarli...\
+calories                                                           828748\
+fat                                                               32063.7\
+protein                                                           43143.9\
+carbs                                                             89490.7\
+saturated fat                                                     11318.4\
+cholesterol                                                        124769\
+sodium                                                        1.27297e+06\
+dietary fiber                                                     9048.94\
+sugars                                                            29684.1\
+potassium                                                     1.19109e+06\
+p                                                                  593415\
+serving_weight_grams                                               584870\
+dtype: object\
+>>> df["calories"]\
+0        106.42\
+1          4.37\
+2          1.42\
+3          4.47\
+4          5.77\
+5         41.36\
+6          0.62\
+7        268.96\
+8         74.84\
+9        455.00\
+10         5.77\
+11         0.00\
+12        22.14\
+13         5.77\
+14         0.81\
+15        71.50\
+16        28.29\
+17       441.64\
+18       124.95\
+19       120.22\
+20        93.84\
+21       123.76\
+22        18.00\
+23       284.16\
+24        10.26\
+25        41.36\
+26         8.48\
+27       101.81\
+28        73.48\
+29         0.00\
+         ...   \
+6684        NaN\
+6685     195.92\
+6686     214.33\
+6687      86.40\
+6688        NaN\
+6689     122.00\
+6690      97.02\
+6691     195.92\
+6692     881.28\
+6693      48.16\
+6694     631.68\
+6695     129.00\
+6696        NaN\
+6697      37.45\
+6698     169.06\
+6699        NaN\
+6700        NaN\
+6701        NaN\
+6702     243.26\
+6703      85.00\
+6704      37.04\
+6705     101.81\
+6706      68.60\
+6707      57.60\
+6708    1207.64\
+6709     128.45\
+6710     100.30\
+6711        NaN\
+6712      22.14\
+6713        NaN\
+Name: calories, Length: 6714, dtype: float64\
+>>> df.dropna(axis="rows")\
+                                            Ingredients  calories          ...                p  serving_weight_grams\
+0                                       romaine lettuce    106.42          ...           187.80                626.00\
+1                                          black olives      4.37          ...             0.11                  3.80\
+2                                        grape tomatoes      1.42          ...             1.90                  7.90\
+3                                                garlic      4.47          ...             4.59                  3.00\
+4                                                pepper      5.77          ...             3.63                  2.30\
+5                                          purple onion     41.36          ...            32.90                 94.00\
+6                                             seasoning      0.62          ...             0.44                  1.20\
+7                                        garbanzo beans    268.96          ...           275.52                164.00\
+8                                  feta cheese crumbles     74.84          ...            95.54                 28.35\
+9                                           plain flour    455.00          ...           135.00                125.00\
+10                                        ground pepper      5.77          ...             3.63                  2.30\
+11                                                 salt      0.00          ...             0.00                  1.50\
+12                                             tomatoes     22.14          ...            29.52                123.00\
+13                                  ground black pepper      5.77          ...             3.63                  2.30\
+15                                                 eggs     71.50          ...            99.00                 50.00\
+16                                       green tomatoes     28.29          ...            34.44                123.00\
+17                                     yellow corn meal    441.64          ...           294.02                122.00\
+19                                        vegetable oil    120.22          ...             0.00                 13.60\
+20                                            mayonaise     93.84          ...             2.90                 13.80\
+22                                        green chilies     18.00          ...            20.70                 45.00\
+23                              grilled chicken breasts    284.16          ...           478.08                192.00\
+24                                        garlic powder     10.26          ...            12.83                  3.10\
+25                                         yellow onion     41.36          ...            32.90                 94.00\
+26                                            soy sauce      8.48          ...            26.56                 16.00\
+27                                               butter    101.81          ...             3.41                 14.20\
+28                                       chicken livers     73.48          ...           178.20                 44.00\
+29                                                water      0.00          ...             0.00                237.00\
+30                                                wheat    631.68          ...           637.44                192.00\
+31                                         black pepper      5.77          ...             3.63                  2.30\
+32                                             shallots     30.62          ...            25.52                 42.53\
+...                                                 ...       ...          ...              ...                   ...\
+6674                        cocktail pumpernickel bread    166.64          ...             9.51                116.61\
+6675                                    chunky tomatoes     22.14          ...            29.52                123.00\
+6676                            Colman's Mustard Powder     10.16          ...            16.56                  2.00\
+6678                           cherry vanilla ice cream      5.17          ...             1.72                  8.20\
+6679                               bone-in ribeye steak    230.35          ...           138.55                 85.00\
+6680  frozen lemonade concentrate, thawed and undiluted     57.02          ...            12.67                 35.20\
+6681                           flowering chinese chives      0.90          ...             1.74                  3.00\
+6682                                    praline topping    189.15          ...            40.56                 39.00\
+6685                                 Barilla Plus Pasta    195.92          ...            71.92                124.00\
+6686                                turkey giblet stock    214.33          ...           252.88                113.40\
+6687                                light chicken stock     86.40          ...            64.80                240.00\
+6689                 2% milk shredded mozzarella cheese    122.00          ...           224.48                244.00\
+6690                                 Makers Mark Whisky     97.02          ...             1.68                 42.00\
+6691                  knorr pasta side   cheesi cheddar    195.92          ...            71.92                124.00\
+6692                               whole grain baguette    881.28          ...           340.20                324.00\
+6693                                 reduced sodium ham     48.16          ...            74.20                 28.00\
+6694                          whole wheat peasant bread    631.68          ...           637.44                192.00\
+6695                              ranch-style seasoning    129.00          ...            55.80                 30.00\
+6697                         chocolate flavored liqueur     37.45          ...            14.56                  7.00\
+6698                       rotini pasta, cook and drain    169.06          ...            62.06                107.00\
+6702                                          curry mix    243.26          ...           225.47                234.57\
+6703            Kraft Slim Cut Mozzarella Cheese Slices     85.00          ...           100.30                 28.33\
+6704                           Oscar Mayer Cotto Salami     37.04          ...            18.82                  9.80\
+6705                                   Challenge Butter    101.81          ...             3.41                 14.20\
+6706                                       orange glaze     68.60          ...            32.20                140.00\
+6707                    cholesterol free egg substitute     57.60          ...            86.40                120.00\
+6708                                      ciabatta loaf   1207.64          ...           444.92                454.00\
+6709         Lipton\'ae Iced Tea Brew Family Size Tea Bags    128.45          ...            95.42                367.00\
+6710  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...    100.30          ...           229.50                170.00\
+6712                          tomato garlic pasta sauce     22.14          ...            29.52                123.00\
+\
+[5332 rows x 13 columns]\
+>>> df.reset_index()\
+      index                                        Ingredients          ...                p  serving_weight_grams\
+0         0                                    romaine lettuce          ...           187.80                626.00\
+1         1                                       black olives          ...             0.11                  3.80\
+2         2                                     grape tomatoes          ...             1.90                  7.90\
+3         3                                             garlic          ...             4.59                  3.00\
+4         4                                             pepper          ...             3.63                  2.30\
+5         5                                       purple onion          ...            32.90                 94.00\
+6         6                                          seasoning          ...             0.44                  1.20\
+7         7                                     garbanzo beans          ...           275.52                164.00\
+8         8                               feta cheese crumbles          ...            95.54                 28.35\
+9         9                                        plain flour          ...           135.00                125.00\
+10       10                                      ground pepper          ...             3.63                  2.30\
+11       11                                               salt          ...             0.00                  1.50\
+12       12                                           tomatoes          ...            29.52                123.00\
+13       13                                ground black pepper          ...             3.63                  2.30\
+14       14                                              thyme          ...             0.85                  0.80\
+15       15                                               eggs          ...            99.00                 50.00\
+16       16                                     green tomatoes          ...            34.44                123.00\
+17       17                                   yellow corn meal          ...           294.02                122.00\
+18       18                                               milk          ...           245.00                245.00\
+19       19                                      vegetable oil          ...             0.00                 13.60\
+20       20                                          mayonaise          ...             2.90                 13.80\
+21       21                                        cooking oil          ...              NaN                 14.00\
+22       22                                      green chilies          ...            20.70                 45.00\
+23       23                            grilled chicken breasts          ...           478.08                192.00\
+24       24                                      garlic powder          ...            12.83                  3.10\
+25       25                                       yellow onion          ...            32.90                 94.00\
+26       26                                          soy sauce          ...            26.56                 16.00\
+27       27                                             butter          ...             3.41                 14.20\
+28       28                                     chicken livers          ...           178.20                 44.00\
+29       29                                              water          ...             0.00                237.00\
+...     ...                                                ...          ...              ...                   ...\
+6684   6684                                         puff paste          ...              NaN                   NaN\
+6685   6685                                 Barilla Plus Pasta          ...            71.92                124.00\
+6686   6686                                turkey giblet stock          ...           252.88                113.40\
+6687   6687                                light chicken stock          ...            64.80                240.00\
+6688   6688                                         conchiglie          ...              NaN                   NaN\
+6689   6689                 2% milk shredded mozzarella cheese          ...           224.48                244.00\
+6690   6690                                 Makers Mark Whisky          ...             1.68                 42.00\
+6691   6691                  knorr pasta side   cheesi cheddar          ...            71.92                124.00\
+6692   6692                               whole grain baguette          ...           340.20                324.00\
+6693   6693                                 reduced sodium ham          ...            74.20                 28.00\
+6694   6694                          whole wheat peasant bread          ...           637.44                192.00\
+6695   6695                              ranch-style seasoning          ...            55.80                 30.00\
+6696   6696                                             ketjap          ...              NaN                   NaN\
+6697   6697                         chocolate flavored liqueur          ...            14.56                  7.00\
+6698   6698                       rotini pasta, cook and drain          ...            62.06                107.00\
+6699   6699                                               game          ...              NaN                   NaN\
+6700   6700                                             tongue          ...              NaN                   NaN\
+6701   6701                                              Daiya          ...              NaN                   NaN\
+6702   6702                                          curry mix          ...           225.47                234.57\
+6703   6703            Kraft Slim Cut Mozzarella Cheese Slices          ...           100.30                 28.33\
+6704   6704                           Oscar Mayer Cotto Salami          ...            18.82                  9.80\
+6705   6705                                   Challenge Butter          ...             3.41                 14.20\
+6706   6706                                       orange glaze          ...            32.20                140.00\
+6707   6707                    cholesterol free egg substitute          ...            86.40                120.00\
+6708   6708                                      ciabatta loaf          ...           444.92                454.00\
+6709   6709         Lipton\'ae Iced Tea Brew Family Size Tea Bags          ...            95.42                367.00\
+6710   6710  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...          ...           229.50                170.00\
+6711   6711                                          lop chong          ...              NaN                   NaN\
+6712   6712                          tomato garlic pasta sauce          ...            29.52                123.00\
+6713   6713                            crushed cheese crackers          ...              NaN                   NaN\
+\
+[6714 rows x 14 columns]\
+>>> df = df.dropna(axis = "rows").reset_index()\
+>>> df\
+      index                                        Ingredients          ...                p  serving_weight_grams\
+0         0                                    romaine lettuce          ...           187.80                626.00\
+1         1                                       black olives          ...             0.11                  3.80\
+2         2                                     grape tomatoes          ...             1.90                  7.90\
+3         3                                             garlic          ...             4.59                  3.00\
+4         4                                             pepper          ...             3.63                  2.30\
+5         5                                       purple onion          ...            32.90                 94.00\
+6         6                                          seasoning          ...             0.44                  1.20\
+7         7                                     garbanzo beans          ...           275.52                164.00\
+8         8                               feta cheese crumbles          ...            95.54                 28.35\
+9         9                                        plain flour          ...           135.00                125.00\
+10       10                                      ground pepper          ...             3.63                  2.30\
+11       11                                               salt          ...             0.00                  1.50\
+12       12                                           tomatoes          ...            29.52                123.00\
+13       13                                ground black pepper          ...             3.63                  2.30\
+14       15                                               eggs          ...            99.00                 50.00\
+15       16                                     green tomatoes          ...            34.44                123.00\
+16       17                                   yellow corn meal          ...           294.02                122.00\
+17       19                                      vegetable oil          ...             0.00                 13.60\
+18       20                                          mayonaise          ...             2.90                 13.80\
+19       22                                      green chilies          ...            20.70                 45.00\
+20       23                            grilled chicken breasts          ...           478.08                192.00\
+21       24                                      garlic powder          ...            12.83                  3.10\
+22       25                                       yellow onion          ...            32.90                 94.00\
+23       26                                          soy sauce          ...            26.56                 16.00\
+24       27                                             butter          ...             3.41                 14.20\
+25       28                                     chicken livers          ...           178.20                 44.00\
+26       29                                              water          ...             0.00                237.00\
+27       30                                              wheat          ...           637.44                192.00\
+28       31                                       black pepper          ...             3.63                  2.30\
+29       32                                           shallots          ...            25.52                 42.53\
+...     ...                                                ...          ...              ...                   ...\
+5302   6674                        cocktail pumpernickel bread          ...             9.51                116.61\
+5303   6675                                    chunky tomatoes          ...            29.52                123.00\
+5304   6676                            Colman's Mustard Powder          ...            16.56                  2.00\
+5305   6678                           cherry vanilla ice cream          ...             1.72                  8.20\
+5306   6679                               bone-in ribeye steak          ...           138.55                 85.00\
+5307   6680  frozen lemonade concentrate, thawed and undiluted          ...            12.67                 35.20\
+5308   6681                           flowering chinese chives          ...             1.74                  3.00\
+5309   6682                                    praline topping          ...            40.56                 39.00\
+5310   6685                                 Barilla Plus Pasta          ...            71.92                124.00\
+5311   6686                                turkey giblet stock          ...           252.88                113.40\
+5312   6687                                light chicken stock          ...            64.80                240.00\
+5313   6689                 2% milk shredded mozzarella cheese          ...           224.48                244.00\
+5314   6690                                 Makers Mark Whisky          ...             1.68                 42.00\
+5315   6691                  knorr pasta side   cheesi cheddar          ...            71.92                124.00\
+5316   6692                               whole grain baguette          ...           340.20                324.00\
+5317   6693                                 reduced sodium ham          ...            74.20                 28.00\
+5318   6694                          whole wheat peasant bread          ...           637.44                192.00\
+5319   6695                              ranch-style seasoning          ...            55.80                 30.00\
+5320   6697                         chocolate flavored liqueur          ...            14.56                  7.00\
+5321   6698                       rotini pasta, cook and drain          ...            62.06                107.00\
+5322   6702                                          curry mix          ...           225.47                234.57\
+5323   6703            Kraft Slim Cut Mozzarella Cheese Slices          ...           100.30                 28.33\
+5324   6704                           Oscar Mayer Cotto Salami          ...            18.82                  9.80\
+5325   6705                                   Challenge Butter          ...             3.41                 14.20\
+5326   6706                                       orange glaze          ...            32.20                140.00\
+5327   6707                    cholesterol free egg substitute          ...            86.40                120.00\
+5328   6708                                      ciabatta loaf          ...           444.92                454.00\
+5329   6709         Lipton\'ae Iced Tea Brew Family Size Tea Bags          ...            95.42                367.00\
+5330   6710  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...          ...           229.50                170.00\
+5331   6712                          tomato garlic pasta sauce          ...            29.52                123.00\
+\
+[5332 rows x 14 columns]\
+>>> df = df.loc[:, "Ingredients":]\
+>>> df.head()\
+       Ingredients  calories   fat  protein          ...           sugars  potassium       p  serving_weight_grams\
+0  romaine lettuce    106.42  1.88     7.70          ...             7.45    1546.22  187.80                 626.0\
+1     black olives      4.37  0.41     0.03          ...             0.00       0.30    0.11                   3.8\
+2   grape tomatoes      1.42  0.02     0.07          ...             0.21      18.72    1.90                   7.9\
+3           garlic      4.47  0.02     0.19          ...             0.03      12.03    4.59                   3.0\
+4           pepper      5.77  0.07     0.24          ...             0.01      30.57    3.63                   2.3\
+\
+[5 rows x 13 columns]\
+>>> df.loc[:,"calories":"protein"].div(df[:,"calories":"protein"].sum(axis=0))\
+Traceback (most recent call last):\
+  File "<stdin>", line 1, in <module>\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py", line 2685, in __getitem__\
+    return self._getitem_column(key)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/frame.py", line 2692, in _getitem_column\
+    return self._get_item_cache(key)\
+  File "/anaconda3/lib/python3.6/site-packages/pandas/core/generic.py", line 2484, in _get_item_cache\
+    res = cache.get(item)\
+TypeError: unhashable type: 'slice'\
+>>> df.loc[:,"calories":"protein"].div(df.loc[:,"calories":"protein"].sum(axis=0))\
+          calories           fat       protein\
+0     1.443007e-04  6.649110e-05  2.051873e-04\
+1     5.925524e-06  1.450072e-05  7.994310e-07\
+2     1.925456e-06  7.073521e-07  1.865339e-06\
+3     6.061119e-06  7.073521e-07  5.063063e-06\
+4     7.823861e-06  2.475733e-06  6.395448e-06\
+5     5.608230e-05  6.366169e-06  3.410906e-05\
+6     8.406921e-07  7.073521e-07  5.329540e-07\
+7     3.646977e-04  1.503123e-04  3.871911e-04\
+8     1.014797e-04  2.132667e-04  1.073902e-04\
+9     6.169595e-04  4.350216e-05  3.440218e-04\
+10    7.823861e-06  2.475733e-06  6.395448e-06\
+11    0.000000e+00  0.000000e+00  0.000000e+00\
+12    3.002084e-05  8.841902e-06  2.877952e-05\
+13    7.823861e-06  2.475733e-06  6.395448e-06\
+14    9.695079e-05  1.683498e-04  1.673476e-04\
+15    3.835997e-05  8.841902e-06  3.943860e-05\
+16    5.988440e-04  1.549101e-04  2.640787e-04\
+17    1.630129e-04  4.809995e-04  0.000000e+00\
+18    1.272428e-04  3.653474e-04  3.464201e-06\
+19    2.440719e-05  3.183085e-06  2.398293e-05\
+20    3.853082e-04  2.302431e-04  1.509326e-03\
+21    1.391210e-05  7.073521e-07  1.359033e-05\
+22    5.608230e-05  6.366169e-06  3.410906e-05\
+23    1.149850e-05  3.183085e-06  3.464201e-05\
+24    1.380498e-04  4.074348e-04  3.197724e-06\
+25    9.963558e-05  1.011514e-04  2.867293e-04\
+26    0.000000e+00  0.000000e+00  0.000000e+00\
+27    8.565297e-04  1.305065e-04  7.879725e-04\
+28    7.823861e-06  2.475733e-06  6.395448e-06\
+29    4.151934e-05  1.414704e-06  2.824656e-05\
+...            ...           ...           ...\
+5302  2.259563e-04  2.475733e-06  5.596017e-06\
+5303  3.002084e-05  8.841902e-06  2.877952e-05\
+5304  1.377650e-05  2.546468e-05  1.385680e-05\
+5305  7.010288e-06  7.073521e-07  2.398293e-06\
+5306  3.123442e-04  5.718942e-04  5.627994e-04\
+5307  7.731656e-05  1.414704e-06  1.119203e-05\
+5308  1.220360e-06  7.073521e-07  2.664770e-06\
+5309  2.564789e-04  3.572128e-04  3.437553e-05\
+5310  2.656587e-04  4.067275e-05  1.915970e-04\
+5311  2.906218e-04  2.963805e-04  8.628525e-04\
+5312  1.171545e-04  1.018587e-04  1.612186e-04\
+5313  1.654265e-04  1.708255e-04  2.145140e-04\
+5314  1.315548e-04  0.000000e+00  0.000000e+00\
+5315  2.656587e-04  4.067275e-05  1.915970e-04\
+5316  1.194976e-03  2.772820e-04  9.281394e-04\
+5317  6.530279e-05  8.205285e-05  1.662817e-04\
+5318  8.565297e-04  1.305065e-04  7.879725e-04\
+5319  1.749182e-04  4.725112e-04  1.065908e-05\
+5320  5.078052e-05  7.356462e-05  1.438976e-05\
+5321  2.292378e-04  3.536761e-05  1.654822e-04\
+5322  3.298496e-04  3.840922e-04  7.527975e-04\
+5323  1.152562e-04  2.238770e-04  1.673476e-04\
+5324  5.022457e-05  1.096396e-04  5.489426e-05\
+5325  1.380498e-04  4.074348e-04  3.197724e-06\
+5326  9.301852e-05  7.427198e-06  3.384258e-05\
+5327  7.810301e-05  0.000000e+00  3.197724e-04\
+5328  1.637506e-03  5.347582e-04  1.070705e-03\
+5329  1.741724e-04  0.000000e+00  0.000000e+00\
+5330  1.360023e-04  2.334262e-05  4.615382e-04\
+5331  3.002084e-05  8.841902e-06  2.877952e-05\
+\
+[5332 rows x 3 columns]\
+>>> df.head()\
+       Ingredients  calories   fat  protein          ...           sugars  potassium       p  serving_weight_grams\
+0  romaine lettuce    106.42  1.88     7.70          ...             7.45    1546.22  187.80                 626.0\
+1     black olives      4.37  0.41     0.03          ...             0.00       0.30    0.11                   3.8\
+2   grape tomatoes      1.42  0.02     0.07          ...             0.21      18.72    1.90                   7.9\
+3           garlic      4.47  0.02     0.19          ...             0.03      12.03    4.59                   3.0\
+4           pepper      5.77  0.07     0.24          ...             0.01      30.57    3.63                   2.3\
+\
+[5 rows x 13 columns]\
+>>> df.columns\
+Index(['Ingredients', 'calories', 'fat', 'protein', 'carbs', 'saturated fat',\
+       'cholesterol', 'sodium', 'dietary fiber', 'sugars', 'potassium', 'p',\
+       'serving_weight_grams'],\
+      dtype='object')\
+>>> df_stand = df.loc[:,"calories":"p"].div(df.loc[:,"calories":"p"].sum(axis=0))\
+>>> df_stand.head()\
+   calories           fat       protein      ...             sugars     potassium             p\
+0  0.000144  6.649110e-05  2.051873e-04      ...       2.598343e-04  1.439664e-03  3.540553e-04\
+1  0.000006  1.450072e-05  7.994310e-07      ...       0.000000e+00  2.793258e-07  2.073806e-07\
+2  0.000002  7.073521e-07  1.865339e-06      ...       7.324188e-06  1.742993e-05  3.582029e-06\
+3  0.000006  7.073521e-07  5.063063e-06      ...       1.046313e-06  1.120096e-05  8.653428e-06\
+4  0.000008  2.475733e-06  6.395448e-06      ...       3.487709e-07  2.846330e-05  6.843561e-06\
+\
+[5 rows x 11 columns]\
+>>> df.head()\
+       Ingredients  calories   fat  protein          ...           sugars  potassium       p  serving_weight_grams\
+0  romaine lettuce    106.42  1.88     7.70          ...             7.45    1546.22  187.80                 626.0\
+1     black olives      4.37  0.41     0.03          ...             0.00       0.30    0.11                   3.8\
+2   grape tomatoes      1.42  0.02     0.07          ...             0.21      18.72    1.90                   7.9\
+3           garlic      4.47  0.02     0.19          ...             0.03      12.03    4.59                   3.0\
+4           pepper      5.77  0.07     0.24          ...             0.01      30.57    3.63                   2.3\
+\
+[5 rows x 13 columns]\
+>>> df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"].div(df["serving_weight_grams"])\
+  File "<stdin>", line 1\
+    df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"].div(df["serving_weight_grams"])\
+                                                                                         ^\
+SyntaxError: invalid syntax\
+>>> df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"].div(df["serving_weight_grams"], axis = 0)\
+  File "<stdin>", line 1\
+    df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"].div(df["serving_weight_grams"], axis = 0)\
+                                                                                         ^\
+SyntaxError: invalid syntax\
+>>>  df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"]\
+  File "<stdin>", line 1\
+    df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"]\
+    ^\
+IndentationError: unexpected indent\
+>>> df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"]\
+  File "<stdin>", line 1\
+    df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories:"serving_weight_grams"]\
+                                                                                         ^\
+SyntaxError: invalid syntax\
+>>> df.loc[:, "calories":"serving_weight_grams"]\
+      calories    fat  protein   carbs          ...           sugars  potassium       p  serving_weight_grams\
+0       106.42   1.88     7.70   20.60          ...             7.45    1546.22  187.80                626.00\
+1         4.37   0.41     0.03    0.24          ...             0.00       0.30    0.11                  3.80\
+2         1.42   0.02     0.07    0.31          ...             0.21      18.72    1.90                  7.90\
+3         4.47   0.02     0.19    0.99          ...             0.03      12.03    4.59                  3.00\
+4         5.77   0.07     0.24    1.47          ...             0.01      30.57    3.63                  2.30\
+5        41.36   0.18     1.28    9.54          ...             4.45     156.04   32.90                 94.00\
+6         0.62   0.02     0.02    0.14          ...             0.01       3.45    0.44                  1.20\
+7       268.96   4.25    14.53   44.97          ...             7.87     477.24  275.52                164.00\
+8        74.84   6.03     4.03    1.16          ...             1.16      17.58   95.54                 28.35\
+9       455.00   1.23    12.91   95.39          ...             0.34     133.75  135.00                125.00\
+10        5.77   0.07     0.24    1.47          ...             0.01      30.57    3.63                  2.30\
+11        0.00   0.00     0.00    0.00          ...             0.00       0.12    0.00                  1.50\
+12       22.14   0.25     1.08    4.78          ...             3.23     291.51   29.52                123.00\
+13        5.77   0.07     0.24    1.47          ...             0.01      30.57    3.63                  2.30\
+14       71.50   4.76     6.28    0.36          ...             0.19      69.00   99.00                 50.00\
+15       28.29   0.25     1.48    6.27          ...             4.92     250.92   34.44                123.00\
+16      441.64   4.38     9.91   93.81          ...             0.78     350.14  294.02                122.00\
+17      120.22  13.60     0.00    0.00          ...             0.00       0.00    0.00                 13.60\
+18       93.84  10.33     0.13    0.08          ...             0.08       2.76    2.90                 13.80\
+19       18.00   0.09     0.90    4.26          ...             2.30     153.00   20.70                 45.00\
+20      284.16   6.51    56.64    0.00          ...             0.00     806.40  478.08                192.00\
+21       10.26   0.02     0.51    2.25          ...             0.08      36.98   12.83                  3.10\
+22       41.36   0.18     1.28    9.54          ...             4.45     156.04   32.90                 94.00\
+23        8.48   0.09     1.30    0.79          ...             0.06      69.60   26.56                 16.00\
+24      101.81  11.52     0.12    0.01          ...             0.01       3.41    3.41                 14.20\
+25       73.48   2.86    10.76    0.38          ...             0.00     115.72  178.20                 44.00\
+26        0.00   0.00     0.00    0.00          ...             0.00       0.00    0.00                237.00\
+27      631.68   3.69    29.57  130.62          ...             0.79     652.80  637.44                192.00\
+28        5.77   0.07     0.24    1.47          ...             0.01      30.57    3.63                  2.30\
+29       30.62   0.04     1.06    7.15          ...             3.35     142.05   25.52                 42.53\
+...        ...    ...      ...     ...          ...              ...        ...     ...                   ...\
+5302    166.64   0.07     0.21   10.12          ...             9.72      43.20    9.51                116.61\
+5303     22.14   0.25     1.08    4.78          ...             3.23     291.51   29.52                123.00\
+5304     10.16   0.72     0.52    0.56          ...             0.14      14.76   16.56                  2.00\
+5305      5.17   0.02     0.09    1.31          ...             1.05      18.20    1.72                  8.20\
+5306    230.35  16.17    21.12    0.00          ...             0.00     237.15  138.55                 85.00\
+5307     57.02   0.04     0.42   14.15          ...            10.08     138.34   12.67                 35.20\
+5308      0.90   0.02     0.10    0.13          ...             0.06       8.88    1.74                  3.00\
+5309    189.15  10.10     1.29   23.24          ...            21.76      84.63   40.56                 39.00\
+5310    195.92   1.15     7.19   38.27          ...             0.69      54.56   71.92                124.00\
+5311    214.33   8.38    32.38    0.07          ...             0.00     271.03  252.88                113.40\
+5312     86.40   2.88     6.05    8.47          ...             3.79     252.00   64.80                240.00\
+5313    122.00   4.83     8.05   11.71          ...            12.35     341.60  224.48                244.00\
+5314     97.02   0.00     0.00    0.00          ...             0.00       0.84    1.68                 42.00\
+5315    195.92   1.15     7.19   38.27          ...             0.69      54.56   71.92                124.00\
+5316    881.28   7.84    34.83  168.09          ...            14.97     379.08  340.20                324.00\
+5317     48.16   2.32     6.24    0.08          ...             0.00     108.08   74.20                 28.00\
+5318    631.68   3.69    29.57  130.62          ...             0.79     652.80  637.44                192.00\
+5319    129.00  13.36     0.40    1.77          ...             1.41      19.20   55.80                 30.00\
+5320     37.45   2.08     0.54    4.16          ...             3.61      26.04   14.56                  7.00\
+5321    169.06   1.00     6.21   33.02          ...             0.60      47.08   62.06                107.00\
+5322    243.26  10.86    28.25    7.52          ...             2.05     373.61  225.47                234.57\
+5323     85.00   6.33     6.28    0.62          ...             0.29      21.53  100.30                 28.33\
+5324     37.04   3.10     2.06    0.07          ...             0.03      35.57   18.82                  9.80\
+5325    101.81  11.52     0.12    0.01          ...             0.01       3.41    3.41                 14.20\
+5326     68.60   0.21     1.27   17.56          ...            11.90     232.40   32.20                140.00\
+5327     57.60   0.00    12.00    2.40          ...             2.40     255.60   86.40                120.00\
+5328   1207.64  15.12    40.18  224.37          ...            25.74     572.04  444.92                454.00\
+5329    128.45   0.00     0.00   32.33          ...            31.89      69.73   95.42                367.00\
+5330    100.30   0.66    17.32    6.12          ...             5.51     239.70  229.50                170.00\
+5331     22.14   0.25     1.08    4.78          ...             3.23     291.51   29.52                123.00\
+\
+[5332 rows x 12 columns]\
+>>> df.loc[:,"calories:"serving_weight_grams"].div(df["serving_weight_grams"], axis = 0) \
+  File "<stdin>", line 1\
+    df.loc[:,"calories:"serving_weight_grams"].div(df["serving_weight_grams"], axis = 0)\
+                                           ^\
+SyntaxError: invalid syntax\
+>>> df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories":"serving_weight_grams"].div(df["serving_weight_grams"], axis = 0)\
+>>> df.head()\
+       Ingredients  calories       fat          ...           potassium         p  serving_weight_grams\
+0  romaine lettuce  0.170000  0.003003          ...            2.470000  0.300000                   1.0\
+1     black olives  1.150000  0.107895          ...            0.078947  0.028947                   1.0\
+2   grape tomatoes  0.179747  0.002532          ...            2.369620  0.240506                   1.0\
+3           garlic  1.490000  0.006667          ...            4.010000  1.530000                   1.0\
+4           pepper  2.508696  0.030435          ...           13.291304  1.578261                   1.0\
+\
+[5 rows x 13 columns]\
+>>> df.loc[:,"calories":"serving_weight_grams"] = df.loc[:,"calories":"serving_weight_grams"].div(0.01*df["serving_weight_grams"], axis = 0)\
+>>> df.head()\
+       Ingredients    calories        fat          ...             potassium           p  serving_weight_grams\
+0  romaine lettuce   17.000000   0.300319          ...            247.000000   30.000000                 100.0\
+1     black olives  115.000000  10.789474          ...              7.894737    2.894737                 100.0\
+2   grape tomatoes   17.974684   0.253165          ...            236.962025   24.050633                 100.0\
+3           garlic  149.000000   0.666667          ...            401.000000  153.000000                 100.0\
+4           pepper  250.869565   3.043478          ...           1329.130435  157.826087                 100.0\
+\
+[5 rows x 13 columns]\
+>>> df.to_csv('ingredients_standardized.csv')\
+>>> df.round(2)\
+                                            Ingredients  calories          ...                p  serving_weight_grams\
+0                                       romaine lettuce     17.00          ...            30.00                 100.0\
+1                                          black olives    115.00          ...             2.89                 100.0\
+2                                        grape tomatoes     17.97          ...            24.05                 100.0\
+3                                                garlic    149.00          ...           153.00                 100.0\
+4                                                pepper    250.87          ...           157.83                 100.0\
+5                                          purple onion     44.00          ...            35.00                 100.0\
+6                                             seasoning     51.67          ...            36.67                 100.0\
+7                                        garbanzo beans    164.00          ...           168.00                 100.0\
+8                                  feta cheese crumbles    263.99          ...           337.00                 100.0\
+9                                           plain flour    364.00          ...           108.00                 100.0\
+10                                        ground pepper    250.87          ...           157.83                 100.0\
+11                                                 salt      0.00          ...             0.00                 100.0\
+12                                             tomatoes     18.00          ...            24.00                 100.0\
+13                                  ground black pepper    250.87          ...           157.83                 100.0\
+14                                                 eggs    143.00          ...           198.00                 100.0\
+15                                       green tomatoes     23.00          ...            28.00                 100.0\
+16                                     yellow corn meal    362.00          ...           241.00                 100.0\
+17                                        vegetable oil    883.97          ...             0.00                 100.0\
+18                                            mayonaise    680.00          ...            21.01                 100.0\
+19                                        green chilies     40.00          ...            46.00                 100.0\
+20                              grilled chicken breasts    148.00          ...           249.00                 100.0\
+21                                        garlic powder    330.97          ...           413.87                 100.0\
+22                                         yellow onion     44.00          ...            35.00                 100.0\
+23                                            soy sauce     53.00          ...           166.00                 100.0\
+24                                               butter    716.97          ...            24.01                 100.0\
+25                                       chicken livers    167.00          ...           405.00                 100.0\
+26                                                water      0.00          ...             0.00                 100.0\
+27                                                wheat    329.00          ...           332.00                 100.0\
+28                                         black pepper    250.87          ...           157.83                 100.0\
+29                                             shallots     72.00          ...            60.00                 100.0\
+...                                                 ...       ...          ...              ...                   ...\
+5302                        cocktail pumpernickel bread    142.90          ...             8.16                 100.0\
+5303                                    chunky tomatoes     18.00          ...            24.00                 100.0\
+5304                            Colman's Mustard Powder    508.00          ...           828.00                 100.0\
+5305                           cherry vanilla ice cream     63.05          ...            20.98                 100.0\
+5306                               bone-in ribeye steak    271.00          ...           163.00                 100.0\
+5307  frozen lemonade concentrate, thawed and undiluted    161.99          ...            35.99                 100.0\
+5308                           flowering chinese chives     30.00          ...            58.00                 100.0\
+5309                                    praline topping    485.00          ...           104.00                 100.0\
+5310                                 Barilla Plus Pasta    158.00          ...            58.00                 100.0\
+5311                                turkey giblet stock    189.00          ...           223.00                 100.0\
+5312                                light chicken stock     36.00          ...            27.00                 100.0\
+5313                 2% milk shredded mozzarella cheese     50.00          ...            92.00                 100.0\
+5314                                 Makers Mark Whisky    231.00          ...             4.00                 100.0\
+5315                  knorr pasta side   cheesi cheddar    158.00          ...            58.00                 100.0\
+5316                               whole grain baguette    272.00          ...           105.00                 100.0\
+5317                                 reduced sodium ham    172.00          ...           265.00                 100.0\
+5318                          whole wheat peasant bread    329.00          ...           332.00                 100.0\
+5319                              ranch-style seasoning    430.00          ...           186.00                 100.0\
+5320                         chocolate flavored liqueur    535.00          ...           208.00                 100.0\
+5321                       rotini pasta, cook and drain    158.00          ...            58.00                 100.0\
+5322                                          curry mix    103.70          ...            96.12                 100.0\
+5323            Kraft Slim Cut Mozzarella Cheese Slices    300.04          ...           354.04                 100.0\
+5324                           Oscar Mayer Cotto Salami    377.96          ...           192.04                 100.0\
+5325                                   Challenge Butter    716.97          ...            24.01                 100.0\
+5326                                       orange glaze     49.00          ...            23.00                 100.0\
+5327                    cholesterol free egg substitute     48.00          ...            72.00                 100.0\
+5328                                      ciabatta loaf    266.00          ...            98.00                 100.0\
+5329         Lipton\'ae Iced Tea Brew Family Size Tea Bags     35.00          ...            26.00                 100.0\
+5330  Hidden Valley\'ae Greek Yogurt Original Ranch\'ae Di...     59.00          ...           135.00                 100.0\
+5331                          tomato garlic pasta sauce     18.00          ...            24.00                 100.0\
+\
+[5332 rows x 13 columns]\
+>>> df.head()\
+       Ingredients    calories        fat          ...             potassium           p  serving_weight_grams\
+0  romaine lettuce   17.000000   0.300319          ...            247.000000   30.000000                 100.0\
+1     black olives  115.000000  10.789474          ...              7.894737    2.894737                 100.0\
+2   grape tomatoes   17.974684   0.253165          ...            236.962025   24.050633                 100.0\
+3           garlic  149.000000   0.666667          ...            401.000000  153.000000                 100.0\
+4           pepper  250.869565   3.043478          ...           1329.130435  157.826087                 100.0\
+\
+[5 rows x 13 columns]\
+>>> df = df.round(2)\
+>>> df.head()\
+       Ingredients  calories    fat  protein          ...           sugars  potassium       p  serving_weight_grams\
+0  romaine lettuce     17.00   0.30     1.23          ...             1.19     247.00   30.00                 100.0\
+1     black olives    115.00  10.79     0.79          ...             0.00       7.89    2.89                 100.0\
+2   grape tomatoes     17.97   0.25     0.89          ...             2.66     236.96   24.05                 100.0\
+3           garlic    149.00   0.67     6.33          ...             1.00     401.00  153.00                 100.0\
+4           pepper    250.87   3.04    10.43          ...             0.43    1329.13  157.83                 100.0\
+\
+[5 rows x 13 columns]\
+>>> df.to_csv('ingredients_standardized.csv')\
+>>> \
+}

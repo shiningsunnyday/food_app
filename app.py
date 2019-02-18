@@ -16,9 +16,97 @@ values = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat',
 values_copy = {x[0]: x[1:] for x in dfs[['Ingredients', 'calories', 'protein', 'fat', 'carbs']].values}
 dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
 laplacian_matrix = pd.read_csv('new_laplacian_matrix.csv').iloc[:,1:]
-
 test_dic = dict(dfs.loc[:]['Ingredients'])
 name_dic = {test_dic[x]: x for x in test_dic.keys()}
+train = pd.read_json('meal_regression/train.json')
+ings = pd.read_csv('ingredients_standardized.csv')
+nutrients = ings.loc[:, 'Ingredients':].values
+nutrients_dic = {nutrient[0]: nutrient[1:] for nutrient in nutrients}
+recipes_nutrients = []
+
+for recipe in train.ingredients:
+    try:
+        recipe_nutrients = [nutrients_dic[ing] for ing in recipe]
+        recipe_nutrients.sort(key = lambda r: r[0])
+        recipes_nutrients.append(np.array(recipe_nutrients))
+    except KeyError:
+        pass
+
+recipes_nutrients = np.array(recipes_nutrients)
+
+shape_div = {}
+for i in range(len(recipes_nutrients)):
+    try:
+        shape_div[recipes_nutrients[i].shape].append(recipes_nutrients[i])
+    except KeyError:
+        if(recipes_nutrients[i].shape not in shape_div):
+            shape_div[recipes_nutrients[i].shape] = [recipes_nutrients[i]]
+shape_div = {key: np.array(shape_div[key]) for key in shape_div.keys()}
+
+from sklearn.neighbors.kde import KernelDensity
+import numpy as np
+
+bandwidths = {1: 132.19411484660287,
+ 2: 533.6699231206302,
+ 3: 335.1602650938834,
+ 4: 210.49041445120218,
+ 5: 210.49041445120218,
+ 6: 335.1602650938834,
+ 7: 210.49041445120218,
+ 8: 210.49041445120218,
+ 9: 335.1602650938834,
+ 10: 210.49041445120218,
+ 11: 335.1602650938834,
+ 12: 210.49041445120218,
+ 13: 335.1602650938834,
+ 14: 335.1602650938834,
+ 15: 533.6699231206302,
+ 16: 533.6699231206302,
+ 17: 533.6699231206302,
+ 18: 533.6699231206302,
+ 19: 533.6699231206302,
+ 20: 849.7534359086438,
+ 21: 335.1602650938834,
+ 22: 1353.0477745798075,
+ 23: 1353.0477745798075,
+ 24: 1353.0477745798075}
+
+kdes = {}
+
+for i in range(1, 25):
+    test_div = []
+    for j in range(len(shape_div[(i, 12)])):
+        to_append = shape_div[(i,12)][j]
+        test_div.append(np.array(to_append))
+    params = {'bandwidth': np.logspace(-10, 10, 100)}
+    data = np.array(test_div).reshape(len(shape_div[(i, 12)]), 12 * i)
+    kde = KernelDensity(kernel = 'gaussian', bandwidth = bandwidths[i])
+    kde.fit(data)
+    kdes[i] = kde
+
+def get_score(recipes):
+    kde = kdes[len(recipes[0])]
+    data = recipes.reshape(len(recipes), -1)
+    print(data.shape)
+    score = kde.score_samples(np.array(data))
+    return score
+    print("recipe with score %s" % (score))
+
+def sorted_scores(recommendations):
+    return {score(rec)[0]: rec for rec in np.array(sorted(recommendations, key = lambda r: score(r)))}
+
+def score(recommendation):
+    nutrients = []
+    for ingredient in recommendation:
+        if(ingredient in nutrients_dic):
+            nutrients.append(nutrients_dic[ingredient])
+        else:
+            continue
+    nutrients = sorted(nutrients, key = lambda c: c[0])
+    if(len(nutrients) > 0):
+        return get_score(np.array([nutrients]))
+    else:
+        return 999
 
 def laplacian(array, cluster):
 
@@ -154,7 +242,15 @@ def api_macros2():
 
     return jsonify("Baby")
 
-
+@app.route('/rank/', methods = ['GET'])
+def api_rank():
+    candidates = str(request.args.get('candidates'))
+    candidates = list(candidates.split('___'))
+    candidates = list(map(lambda x: x.split('__'), candidates))
+    candidates = list(map(lambda x: list(map(lambda y: y.replace('_', ' '), x)), candidates))
+    result = sorted_scores([recipe for recipe in candidates if len(recipe) < 25 and len(recipe) > 0])
+    print(result)
+    return jsonify(result)
 
 @app.route('/macros/<target_macros>', methods = ['GET'])
 def api_macros_(target_macros):
