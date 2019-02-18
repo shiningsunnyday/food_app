@@ -87,10 +87,10 @@ for i in range(1, 25):
 def get_score(recipes):
     kde = kdes[len(recipes[0])]
     data = recipes.reshape(len(recipes), -1)
-    print(data.shape)
+    # print(data.shape)
     score = kde.score_samples(np.array(data))
     return score
-    print("recipe with score %s" % (score))
+    # print("recipe with score %s" % (score))
 
 def sorted_scores(recommendations):
     return {score(rec)[0]: rec for rec in np.array(sorted(recommendations, key = lambda r: score(r)))}
@@ -147,19 +147,16 @@ def generate(target_macros_processed):
 
             ingredients.append([ing['Ingredients'], str(ing['serving_qty']) + ' ' + str(ing['serving_unit']),
                                 {'calories': ing['calories'], 'protein': ing['protein'], 'fat': ing['fat'], 'carbs': ing['carbs']}])
-
             mcros = [mcros[i] + ing[dic[i]] for i in range(len(mcros))]
-
         else:
-
             break
 
     for i in range(20):
-
         try:
             ingredients, mcros = iterate(ingredients, mcros, target_macros_processed)
         except KeyError or IndexError:
-            print("BAD ITERATE")
+            # print("BAD ITERATE")
+            pass
 
 
     return ingredients, mcros
@@ -169,7 +166,7 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
     minimal_error = sum([abs(mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
-    print("CURRENT ERROR IS ", minimal_error)
+    # print("CURRENT ERROR IS ", minimal_error)
     ing_to_add = ""
     ing_to_remove = ""
     b = 0
@@ -190,28 +187,28 @@ def iterate(ingredients, mcros, target_mcros, preferences = 4):
         ing_name = ing[0]
         subtract_effect = sum([abs(-ing[2][dic[i]] + mcros[i] - target_mcros[i]) for i in range(1, preferences)])
 
-        print("IF we try removing", ing_name, "we can get an error of", subtract_effect)
+        # print("IF we try removing", ing_name, "we can get an error of", subtract_effect)
 
         if subtract_effect < minimal_error:
 
             minimal_error = subtract_effect
             b = 2
             ing_to_remove = ing
-            print("CANDIDATE TO REMOVE", ing_to_remove)
+            # print("CANDIDATE TO REMOVE", ing_to_remove)
 
-    print("LIKE THIS", ing_to_add)
-    print(b)
+    # print("LIKE THIS", ing_to_add)
+    # print(b)
     if b == 1:
 
         ingredients.append(ing_to_add)
-        print("ADDED",ing_to_add)
+        # print("ADDED",ing_to_add)
 
     elif b == 2:
 
-        print(len(ingredients))
+        # print(len(ingredients))
         ingredients.remove(ing_to_remove)
-        print(len(ingredients))
-        print("REMOVED",ing_to_remove)
+        # print(len(ingredients))
+        # print("REMOVED",ing_to_remove)
 
     else:
         pass
@@ -234,7 +231,7 @@ def api_add():
 
     x = str(request.args.get('ingredient'))
     boo = bool(int(request.args.get('boo')))
-    print(boo)
+    # print(boo)
     return add_new(x.replace('_', ' '), boo)
 
 @app.route('/macros', methods = ['GET'])
@@ -249,7 +246,7 @@ def api_rank():
     candidates = list(map(lambda x: x.split('__'), candidates))
     candidates = list(map(lambda x: list(map(lambda y: y.replace('_', ' '), x)), candidates))
     result = sorted_scores([recipe for recipe in candidates if len(recipe) < 25 and len(recipe) > 0])
-    print(result)
+    # print(result)
     return jsonify(result)
 
 @app.route('/macros/<target_macros>', methods = ['GET'])
@@ -259,11 +256,13 @@ def api_macros_(target_macros):
     avg_percent_off = 100
     closeness_measure = 0
 
+    all_generated = []
 
-    for i in range(10):
+    for i in range(20):
 
         #fetches ingredients and mcros with target_macros
         ingredients, mcros = generate(target_macros_processed)
+        all_generated.append([ing[0] for ing in ingredients])
         if i == 0:
             final_mcros = mcros
             final_ingredients = ingredients
@@ -271,7 +270,6 @@ def api_macros_(target_macros):
         x = sum([
             100 * abs(mcros[i] - target_macros_processed[i])/(target_macros_processed[i]) for i in range(len(mcros))]) / 4.0
         food_arr = laplacian([ingredient[0] for ingredient in ingredients], False)
-
         y = sum(sum(x) for x in food_arr)/len(food_arr)
 
         if x < avg_percent_off:
@@ -280,6 +278,7 @@ def api_macros_(target_macros):
             final_mcros = mcros
             final_ingredients = ingredients
 
+    print(sorted_scores(all_generated))
 
     return jsonify({"requirements": [int(x) for x in final_mcros],
                     "listToDisplay": [
@@ -334,7 +333,7 @@ def k_means(X, n_clusters):
 def spectral_cluster(array, num_meals):
 
     X = laplacian(array, True)
-    print(X)
+    # print(X)
     eigen_vals, eigen_vects = linalg.eigs(X, num_meals)
     X = eigen_vects.real
     rows_norm = np.linalg.norm(X, axis=1, ord=2)
