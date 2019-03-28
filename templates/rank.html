@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Meal ranking</h1>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.ingredients.label }}<br>
+      {{ form.ingredients }}
+    </p>
+    <p>
+      Example: flour tortillas, cheese, breakfast sausages, large eggs
+    </p>
+    <p>{{ form.submit() }}</p>
+    {{ result }}
+  </form>
+{% endblock %}
