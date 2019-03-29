@@ -1,18 +1,18 @@
 from flask import Flask, jsonify, render_template, request, redirect, session, url_for
 import pandas as pd
 import numpy as np
-from food_app_api import app
+from food_app import app
 import json
 
-from food_app_api.functions import add_new, generate, iterate, cluster, macros, return_all, substitute, sorted_scores, get_score, fix_diff, get_info
+from food_app.functions import add_new, generate, iterate, cluster, macros, return_all, substitute, sorted_scores, get_score, fix_diff, get_info
 import numpy as np
 
-from food_app_api.forms import MacrosForm, IngredientsForm
-from bokeh.plotting import figure
-from bokeh.resources import CDN
-from bokeh.embed import file_html, components
-from bokeh.util.string import encode_utf8
-from bokeh.resources import INLINE
+from food_app.forms import MacrosForm, IngredientsForm
+# from bokeh.plotting import figure
+# from bokeh.resources import CDN
+# from bokeh.embed import file_html, components
+# from bokeh.util.string import encode_utf8
+# from bokeh.resources import INLINE
 
 @app.route('/')
 def api_root():
