@@ -2,3 +2,4 @@
 *.rtf
 rds.py
 **/meal_regression
+**/__pycache__

@@ -1,13 +1,13 @@
 from flask import Flask, jsonify, render_template, request, redirect, session, url_for
 import pandas as pd
 import numpy as np
-from . import app
+from app import app
 import json
 
-from .functions import add_new, generate, iterate, cluster, macros, return_all, substitute, sorted_scores, get_score, fix_diff, get_info
+from app.functions import add_new, generate, iterate, cluster, macros, return_all, substitute, sorted_scores, get_score, fix_diff, get_info
 import numpy as np
 
-from .forms import MacrosForm, IngredientsForm
+from app.forms import MacrosForm, IngredientsForm
 # from bokeh.plotting import figure
 # from bokeh.resources import CDN
 # from bokeh.embed import file_html, components
