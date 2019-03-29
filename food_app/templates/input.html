@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Meal generation</h1>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.calories.label }}<br>
+      {{ form.calories }}
+    </p>
+    <p>
+      {{ form.protein.label }}<br>
+      {{ form.protein }}
+    </p>
+    <p>
+      {{ form.fat.label }}<br>
+      {{ form.fat }}
+    </p>
+    <p>
+      {{ form.carbs.label }}<br>
+      {{ form.carbs }}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+  <hr>
+  {{ requirements }}
+  {{ display_list }}
+{% endblock %}

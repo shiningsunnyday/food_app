@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Meal Substitution</h1>
+  <form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.ingredients.label }}<br>
+      {{ form.ingredients }}
+    </p>
+    <p>
+      Substitute a meal for one with similar nutrition with minimal reused ingredients.
+    </p>
+    <p>{{ form.submit() }}</p>
+    <p>
+      Example: flour tortillas, cheese, breakfast sausages, large eggs<br>
+      Example's Nutrition: Calories: 751, Protein: 54, Fat: 5, Carbs: 116<br>
+      Output: {{ ingredients }}<br>
+      Output's Nutrition:
+    </p>
+  </form>
+{% endblock %}
