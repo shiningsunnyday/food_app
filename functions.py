@@ -8,7 +8,6 @@ import scipy.sparse.linalg as linalg
 from sklearn.cluster import KMeans
 from sklearn.neighbors.kde import KernelDensity
 
-
 df = pd.read_csv('new_ingredients_test.csv')
 dfs = df.loc[:, 'Ingredients':].dropna()
 dfs_name = dfs.set_index("Ingredients", drop = False)
