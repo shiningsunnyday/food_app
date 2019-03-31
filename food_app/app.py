@@ -4,7 +4,6 @@ import numpy as np
 import json
 from food_app.functions import add_new, generate, iterate, cluster, macros, return_all, substitute, sorted_scores, get_score, fix_diff, get_info
 import numpy as np
-
 from food_app.forms import MacrosForm, IngredientsForm
 # from bokeh.plotting import figure
 # from bokeh.resources import CDN
@@ -86,7 +85,7 @@ def api_substitute():
         ingredients = json.dumps(str(form.ingredients.data))
         ingredients = ingredients.strip('\"')
         session['ingredients'] = ingredients
-        ingredients = substitute_(ingredients)
+        ingredients = substitute(ingredients)
         return render_template('substitute.html', form = form, ingredients = ingredients)
     return render_template('substitute.html', form = form)
 

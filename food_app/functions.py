@@ -5,7 +5,7 @@ import requests
 import json
 import numpy as np
 import scipy.sparse.linalg as linalg
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.neighbors.kde import KernelDensity
 
 df = pd.read_csv('food_app/new_ingredients_test.csv')
@@ -18,9 +18,11 @@ laplacian_matrix = pd.read_csv('food_app/new_laplacian_matrix.csv').iloc[:,1:]
 test_dic = dict(dfs.loc[:]['Ingredients'])
 name_dic = {test_dic[x]: x for x in test_dic.keys()}
 train = pd.read_json('meal_regression/train.json')
-ings = pd.read_csv('food_app/ingredients_standardized.csv')
+ings = pd.read_csv('food_app/ingredients_standardized.csv').loc[:,'Ingredients':].dropna()
 nutrients = ings.loc[:, 'Ingredients':].values
 nutrients_dic = {nutrient[0]: nutrient[1:] for nutrient in nutrients}
+ordered_ings = list(nutrients_dic.keys())
+ordered_ings_dic = {ordered_ings[i]: i for i in range(len(ordered_ings))}
 recipes_nutrients = []
 
 bandwidths = {1: 132.19411484660287,
@@ -79,12 +81,8 @@ for i in range(1, 25):
     kde.fit(data)
     kdes[i] = kde
 
-def add_new(x, boo):
-
-    print(boo)
-    pd.options.mode.chained_assignment = None
-    attributes = ['Ingredients', 'calories', 'fat', 'protein', 'carbs', 'serving_qty', 'serving_unit', 'serving_weight_grams']
-
+def add_new(x):
+    global ings
     url = 'https://trackapi.nutritionix.com/v2/natural/nutrients'
     headers = {
 
@@ -97,38 +95,21 @@ def add_new(x, boo):
 
     data = {"query": x}
     r = requests.post(url, headers = headers, data = json.dumps(data))
-    print(r)
     body = json.loads(r.text)
-    print(body)
     try:
         food = body['foods'][0]
     except KeyError:
         return jsonify("OH NO")
 
-    dic = {'label': str(x),
-           'amount': str(food["serving_qty"]) + ' ' + str(food["serving_unit"]),
-           'calories': int(food["nf_calories"]),
-           'protein': int(food["nf_protein"]),
-           'fat': int(food["nf_total_fat"]),
-           'carbs': int(food["nf_total_carbohydrate"]),
-           }
-    if boo:
+    ratio = float(float(food["serving_weight_grams"]) / 100.0)
+    desired_attrs = ['food_name', 'nf_calories', 'nf_total_fat', 'nf_protein', 'nf_total_carbohydrate', 'nf_saturated_fat', 'nf_cholesterol', 'nf_sodium', 'nf_dietary_fiber', 'nf_sugars', 'nf_potassium', 'nf_p', 'serving_weight_grams']
+    lis = [food[attr] if food[attr] != None else 0 for attr in desired_attrs]
+    stand_lis = [lis[0]] + list(map(lambda x: round((float(x) / (float(lis[-1]) / 100)), 2), lis[1:]))
+    dic = {ings.columns[i]: stand_lis[i] for i in range(len(ings.columns))}
+    df = pd.DataFrame(np.array(stand_lis).reshape(1, -1), columns = ings.columns)
+    ings = ings.append(df, ignore_index = True)
+    return ings.values[-1][1:]
 
-        df_nutrition = pd.read_csv('./new_ingredients_test.csv').loc[:, "Ingredients":]
-        values = [str(x), int(food["nf_calories"]), int(food["nf_total_fat"]), int(food["nf_protein"]), int(food["nf_total_carbohydrate"]), float(food["serving_qty"]), str(food["serving_unit"]), int(food["serving_weight_grams"])]
-        dic = dict(zip(attributes, values))
-        df_nutrition = df_nutrition.append(pd.DataFrame(dic, index=[len(df_nutrition)]))
-        df_nutrition.to_csv('./new_ingredients_test.csv')
-        aff = pd.read_csv('./new_laplacian_matrix.csv').iloc[:, 1:].values
-        print(aff)
-        aff = [np.append(x, 1) for x in aff]
-        print(aff)
-        aff.append([0] * len(aff[0]))
-
-        pd.DataFrame(aff).to_csv('./new_laplacian_matrix.csv')
-
-
-    return jsonify(dic)
 
 def to_table(array_dic):
     result = "<table>"
@@ -354,8 +335,54 @@ def score(recommendation):
     else:
         return 999
 
-def substitute(ings):
-    return ings
+# returns ing:cluster_number dic
+def recipe_to_labels(recipe):
+    global ings
+    agg_clustering = AgglomerativeClustering(n_clusters = 100).fit(ings.loc[:, 'calories':'serving_weight_grams'].values)
+    return {ing: agg_clustering.labels_[ordered_ings_dic[ing]] for ing in recipe}
+
+# replaces ings of key label with random alternative ings
+def substitute_label(key, ings, labels_dic):
+    subs = []
+    key_array = labels_dic[key]
+    for ing in ings:
+        key_array.remove(ing)
+    for i in range(len(ings)):
+        rand_index = random.randint(0, len(ings) - 1)
+        subs.append(key_array[rand_index])
+        del key_array[rand_index]
+    return subs
+
+def substitute_recipe(recipe):
+    recipe_ing_labels = recipe_to_labels(recipe)
+    recipe_labels = recipe_to_labels(ordered_ings_dic)
+    # matches to label:array_ingredients dic
+    labels_dic = {key: [] for key in set(recipe_labels.values())}
+    for key in recipe_labels.keys():
+        labels_dic[recipe_labels[key]].append(key)
+    label_freqs = {key: [ing for ing in recipe_ing_labels.keys() if recipe_ing_labels[ing] == key] for key in set(recipe_ing_labels.values())}
+    new_substitute = []
+    sorted_keys = sorted(label_freqs.keys(), key = lambda x: len(label_freqs[x]))
+    for key in sorted_keys:
+        new_substitute += substitute_label(key, label_freqs[key], labels_dic)
+    return new_substitute
+
+def check_new_ings(ings_lis):
+    global ordered_ings
+    global ordered_ings_dic
+    global ings
+    for ing in ings_lis:
+        if ing not in ordered_ings_dic.keys():
+            nutrients_dic[ing] = add_new(ing)
+            ordered_ings = list(nutrients_dic.keys())
+            ordered_ings_dic[ing] = len(ordered_ings) - 1
+
+def substitute(ingrs):
+    # print(ings.split(', '), "ings")
+    # print(substitute_recipe(ings.split(', ')), "sub ings")
+    ings_lis = ingrs.split(', ')
+    check_new_ings(ings_lis)
+    return substitute_recipe(ings_lis)
 
 def fix_diff(diff):
     dic = {0: 'calories', 1: 'protein', 2: 'fat', 3:'carbs'}
