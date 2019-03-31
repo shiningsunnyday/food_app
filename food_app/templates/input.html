@@ -23,6 +23,6 @@
     <p>{{ form.submit() }}</p>
   </form>
   <hr>
-  {{ requirements }}
-  {{ display_list }}
+  {{ requirements|safe }}
+  {{ display_list|safe }}
 {% endblock %}

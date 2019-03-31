@@ -7,6 +7,7 @@ import numpy as np
 import scipy.sparse.linalg as linalg
 from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.neighbors.kde import KernelDensity
+from food_app.to_html import to_table, to_lists, to_list_of_lists
 
 df = pd.read_csv('food_app/new_ingredients_test.csv')
 dfs = df.loc[:, 'Ingredients':].dropna()
@@ -109,28 +110,6 @@ def add_new(x):
     df = pd.DataFrame(np.array(stand_lis).reshape(1, -1), columns = ings.columns)
     ings = ings.append(df, ignore_index = True)
     return ings.values[-1][1:]
-
-
-def to_table(array_dic):
-    result = "<table>"
-    result += '<tr>'
-    for key in array_dic[0].keys():
-        result += ('<th>' + key + '</th>')
-    result += '</tr>'
-    for dic in array_dic:
-        result += '<tr><td>'
-        result += '</td><td>'.join(list(map(str, dic.values())))
-        result += '</td></tr>'
-    result += "</table>"
-    return result
-
-def to_lists(display_lists):
-    result = ""
-    for lis in display_lists:
-        result += '<ul><li>'
-        result += '</li><li>'.join(list(map(lambda x: x['label'], lis)))
-        result += '</li></ul>'
-    return result
 
 def macros(target_macros):
     target_macros_processed = list(map(int, target_macros.split('_')))
@@ -296,7 +275,7 @@ def cluster(string, num_meals):
         "requirements": [int(y) for y in requirements[i]]
         }
                     for i in range(len(x))]}
-    return requirements, list_of_ingredient_lists
+    return requirements, to_list_of_lists(list_of_ingredient_lists)
 
 def return_all():
     alling = []
@@ -378,8 +357,6 @@ def check_new_ings(ings_lis):
             ordered_ings_dic[ing] = len(ordered_ings) - 1
 
 def substitute(ingrs):
-    # print(ings.split(', '), "ings")
-    # print(substitute_recipe(ings.split(', ')), "sub ings")
     ings_lis = ingrs.split(', ')
     check_new_ings(ings_lis)
     return substitute_recipe(ings_lis)

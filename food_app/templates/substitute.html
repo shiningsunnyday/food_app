@@ -11,12 +11,13 @@
     <p>
       Substitute a meal for one with similar nutrition with minimal reused ingredients.
     </p>
+    <p>
+      Output: {{ ingredients }}
+    </p>
     <p>{{ form.submit() }}</p>
     <p>
-      Example: flour tortillas, cheese, breakfast sausages, large eggs<br>
-      Example's Nutrition: Calories: 751, Protein: 54, Fat: 5, Carbs: 116<br>
-      Output: {{ ingredients }}<br>
-      Output's Nutrition:
+      Example input: olive oil, purple onion, fresh pineapple, pork, poblano peppers, corn tortillas, cheddar cheese, ground black pepper, salt, iceberg lettuce, lime, jalapeno chilies, chopped cilantro fresh<br>
+      Example output: sharp cheddar cheese, yellow corn meal, pepper, romaine lettuce, vegetable oil, chopped cilantro, skirt steak, sea salt, green tomatoes, pimentos, lemon juice, green beans, lime juice<br>
     </p>
   </form>
 {% endblock %}

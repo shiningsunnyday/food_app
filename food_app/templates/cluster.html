@@ -14,7 +14,6 @@
     </p>
     <p>{{ form.submit() }}</p>
     Example: banana, oatmeal, brown rice, turkey breast, egg white, lentils
-    {{ requirements }}
-    {{ list_of_ingredient_lists }}
+    {{ list_of_ingredient_lists|safe }}
   </form>
 {% endblock %}
